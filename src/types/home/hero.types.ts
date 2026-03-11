@@ -6,6 +6,14 @@ export interface HeroContent {
   ctaHref:      string
 }
 
+export interface HeroFeature {
+  id:       number
+  icon:     string   // path to icon in /public/icons/
+  title:    string
+  subtitle: string
+}
+
 export interface HeroSectionProps {
-  content?: HeroContent
+  content?:  HeroContent
+  features?: HeroFeature[]
 }
