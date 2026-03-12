@@ -39,16 +39,16 @@ function MobileMenu({ isOpen, onClose, links, cartCount }: MobileMenuProps) {
       <nav
         aria-label="Mobile navigation"
         className={cn(
-          "fixed top-0 left-0 h-full w-[75vw] max-w-[300px] z-50",
+          "fixed top-0 left-0 h-full w-[75vw] max-w-75 z-50",
           "flex flex-col bg-white shadow-2xl",
           "transition-transform duration-300 ease-in-out",
           isOpen ? "translate-x-0" : "-translate-x-full",
         )}
       >
-        {/* Header */}
+        {/* Header — always use dark logo inside white drawer */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
           <Image
-            src={NAVBAR_LOGO.src}
+            src={NAVBAR_LOGO.srcDark}
             alt={NAVBAR_LOGO.alt}
             width={44}
             height={44}
@@ -70,7 +70,7 @@ function MobileMenu({ isOpen, onClose, links, cartCount }: MobileMenuProps) {
               <Link
                 href={link.href}
                 onClick={onClose}
-                className="block px-6 py-4 font-sora font-medium text-[15px]
+                className="block px-6 py-4 font-candara font-bold text-[18px]
                            text-gray-800 hover:text-black hover:bg-gray-50
                            border-b border-gray-50 transition-colors"
               >
@@ -86,17 +86,15 @@ function MobileMenu({ isOpen, onClose, links, cartCount }: MobileMenuProps) {
             href="/cart"
             onClick={onClose}
             className="flex items-center justify-center gap-2 w-full py-3
-                       rounded-full bg-black text-white font-sora font-medium
+                       rounded-full bg-black text-white font-sora font-bold
                        text-sm tracking-wide hover:bg-gray-900 transition-colors"
           >
             <ShoppingBag className="w-4 h-4" />
             Cart
             {cartCount > 0 && (
-              <span
-                className="ml-1 bg-red-500 text-white text-[10px] font-bold
+              <span className="ml-1 bg-red-500 text-white text-[10px] font-bold
                                rounded-full min-w-[18px] h-[18px] flex items-center
-                               justify-center px-1"
-              >
+                               justify-center px-1">
                 {cartCount > 99 ? "99+" : cartCount}
               </span>
             )}
@@ -111,11 +109,10 @@ function MobileMenu({ isOpen, onClose, links, cartCount }: MobileMenuProps) {
 // Main Navbar
 // ─────────────────────────────────────────────────────────────────────────────
 export default function Navbar({ cartCount = 0 }: NavbarProps) {
-  const [scrolled, setScrolled] = useState(false);
+  const [scrolled,   setScrolled]   = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
 
-  // White bg kicks in after scrolling 80% of viewport height
   useEffect(() => {
     function handleScroll() {
       setScrolled(window.scrollY >= window.innerHeight * SCROLL_THRESHOLD_VH);
@@ -126,10 +123,11 @@ export default function Navbar({ cartCount = 0 }: NavbarProps) {
   }, []);
 
   const isTransparent = !scrolled;
-
-  // Icon + text colour helpers
   const iconCls = isTransparent ? "text-white" : "text-gray-800";
   const iconBtn = "p-2 rounded-full transition-colors hover:bg-black/5";
+
+  // ── Logo src swaps based on navbar state ──────────────────────────────────
+  const logoSrc = isTransparent ? NAVBAR_LOGO.src : NAVBAR_LOGO.srcDark;
 
   return (
     <>
@@ -142,40 +140,34 @@ export default function Navbar({ cartCount = 0 }: NavbarProps) {
         )}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* ════════════════════════════════════════════════════════════════
-              DESKTOP  ≥ md   :  Logo  |  Nav Links  |  Search + Cart
-              ════════════════════════════════════════════════════════════════ */}
+
+          {/* ── DESKTOP ─────────────────────────────────────────────────── */}
           <div className="hidden md:flex items-center justify-between">
+
             {/* Logo */}
-            <Link
-              href="/"
-              aria-label="Aroma Speciality Tea — Home"
-              className="shrink-0 hover:opacity-80 transition-opacity"
-            >
+            <Link href="/" aria-label="Aroma Speciality Tea — Home"
+              className="shrink-0 hover:opacity-80 transition-opacity">
               <Image
-                src={NAVBAR_LOGO.src}
+                src={logoSrc}
                 alt={NAVBAR_LOGO.alt}
                 width={NAVBAR_LOGO.width}
                 height={NAVBAR_LOGO.height}
                 priority
                 className={cn(
                   "object-contain transition-all duration-300",
-                  isTransparent ? "w-14 h-14 drop-shadow-md" : "w-12 h-12",
+                  isTransparent ? "w-14 h-14 drop-shadow-md" : "w-14 h-14",
                 )}
               />
             </Link>
 
             {/* Nav links */}
-            <nav
-              aria-label="Main navigation"
-              className="flex items-center gap-1 lg:gap-2"
-            >
+            <nav aria-label="Main navigation" className="flex items-center gap-1 lg:gap-2">
               {NAV_LINKS.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    "font-sora font-medium text-[15px] px-4 py-2 transition-colors duration-200",
+                    "font-sora font-bold text-[16px] lg:text-[18px] px-4 py-2 transition-colors duration-200",
                     "relative after:absolute after:bottom-0 after:left-4 after:right-4",
                     "after:h-[2px] after:rounded-full after:scale-x-0 hover:after:scale-x-100",
                     "after:transition-transform after:duration-200",
@@ -190,14 +182,14 @@ export default function Navbar({ cartCount = 0 }: NavbarProps) {
             </nav>
 
             {/* Search + Cart */}
-            <div className="flex items-center gap-0.5">
+            <div className="flex items-center gap-2">
+
+              {/* Search button */}
               <div className="relative flex items-center">
-                <div
-                  className={cn(
-                    "absolute right-9 overflow-hidden transition-all duration-300",
-                    searchOpen ? "w-52 opacity-100" : "w-0 opacity-0",
-                  )}
-                >
+                <div className={cn(
+                  "absolute right-9 overflow-hidden transition-all duration-300",
+                  searchOpen ? "w-52 opacity-100" : "w-0 opacity-0",
+                )}>
                   <input
                     type="search"
                     placeholder="Search teas…"
@@ -214,30 +206,27 @@ export default function Navbar({ cartCount = 0 }: NavbarProps) {
                 <button
                   onClick={() => setSearchOpen((p) => !p)}
                   aria-label="Search"
-                  className={iconBtn}
+                  className={cn(
+                    "p-2 rounded-full transition-all duration-300",
+                  )}
                 >
-                  <Search
-                    className={cn("w-5 h-5", iconCls)}
-                    strokeWidth={1.75}
-                  />
+                  <Search className={cn("w-5 h-5", iconCls)} strokeWidth={1.75} />
                 </button>
               </div>
 
+              {/* Cart button — white bordered pill on transparent, plain on white */}
               <Link
                 href="/cart"
                 aria-label={`Cart — ${cartCount} items`}
-                className={cn("relative", iconBtn)}
+                className={cn(
+                  "relative flex items-center justify-center transition-all duration-300",
+                )}
               >
-                <ShoppingBag
-                  className={cn("w-5 h-5", iconCls)}
-                  strokeWidth={1.75}
-                />
+                <ShoppingBag className={cn("w-5 h-5", iconCls)} strokeWidth={1.75} />
                 {cartCount > 0 && (
-                  <span
-                    className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px]
+                  <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px]
                                    flex items-center justify-center px-1 rounded-full
-                                   bg-red-500 text-white text-[10px] font-bold ring-1 ring-white"
-                  >
+                                   bg-red-500 text-white text-[10px] font-bold ring-1 ring-white">
                     {cartCount > 99 ? "99+" : cartCount}
                   </span>
                 )}
@@ -245,24 +234,18 @@ export default function Navbar({ cartCount = 0 }: NavbarProps) {
             </div>
           </div>
 
+          {/* ── MOBILE ──────────────────────────────────────────────────── */}
           <div className="flex md:hidden items-center justify-between">
+
             {/* LEFT: Hamburger + Logo */}
             <div className="flex items-center gap-2">
-              <button
-                onClick={() => setMobileOpen(true)}
-                aria-label="Open menu"
-                className={iconBtn}
-              >
+              <button onClick={() => setMobileOpen(true)} aria-label="Open menu" className={iconBtn}>
                 <Menu className={cn("w-5 h-5", iconCls)} strokeWidth={1.75} />
               </button>
-
-              <Link
-                href="/"
-                aria-label="Aroma Speciality Tea — Home"
-                className="hover:opacity-80 transition-opacity"
-              >
+              <Link href="/" aria-label="Aroma Speciality Tea — Home"
+                className="hover:opacity-80 transition-opacity">
                 <Image
-                  src={NAVBAR_LOGO.src}
+                  src={logoSrc}
                   alt={NAVBAR_LOGO.alt}
                   width={40}
                   height={40}
@@ -277,35 +260,22 @@ export default function Navbar({ cartCount = 0 }: NavbarProps) {
 
             {/* RIGHT: Search + Cart */}
             <div className="flex items-center gap-0.5">
-              <button
-                onClick={() => setSearchOpen((p) => !p)}
-                aria-label="Search"
-                className={iconBtn}
-              >
+              <button onClick={() => setSearchOpen((p) => !p)} aria-label="Search" className={iconBtn}>
                 <Search className={cn("w-5 h-5", iconCls)} strokeWidth={1.75} />
               </button>
-
-              <Link
-                href="/cart"
-                aria-label={`Cart — ${cartCount} items`}
-                className={cn("relative", iconBtn)}
-              >
-                <ShoppingBag
-                  className={cn("w-5 h-5", iconCls)}
-                  strokeWidth={1.75}
-                />
+              <Link href="/cart" aria-label={`Cart — ${cartCount} items`} className={cn("relative", iconBtn)}>
+                <ShoppingBag className={cn("w-5 h-5", iconCls)} strokeWidth={1.75} />
                 {cartCount > 0 && (
-                  <span
-                    className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px]
+                  <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px]
                                    flex items-center justify-center px-1 rounded-full
-                                   bg-red-500 text-white text-[10px] font-bold ring-1 ring-white"
-                  >
+                                   bg-red-500 text-white text-[10px] font-bold ring-1 ring-white">
                     {cartCount > 99 ? "99+" : cartCount}
                   </span>
                 )}
               </Link>
             </div>
           </div>
+
         </div>
       </header>
 

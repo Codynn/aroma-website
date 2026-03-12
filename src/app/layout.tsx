@@ -4,6 +4,7 @@ import './globals.css'
 import { Toaster } from '@/components/ui/sonner'
 import { QueryProvider } from '@/lib/Providers'
 import Navbar from '@/components/shared/Navbar'
+import Footer from '@/components/shared/Footer'
 
 // ── Fonts ─────────────────────────────────────────────────────────────────────
 
@@ -173,7 +174,7 @@ export default function RootLayout({
         </QueryProvider>
 
         {/* Footer outside Providers — no query/auth needed ── */}
-        {/* <Footer /> */}
+        <Footer />
       </body>
     </html>
   )

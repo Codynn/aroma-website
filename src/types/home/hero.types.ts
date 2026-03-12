@@ -8,7 +8,7 @@ export interface HeroContent {
 
 export interface HeroFeature {
   id:       number
-  icon:     string   // path to icon in /public/icons/
+  icon:     string
   title:    string
   subtitle: string
 }
