@@ -1,7 +1,7 @@
 import { NavLink } from "@/types/layout/navbar.types"
 
 export const NAV_LINKS: NavLink[] = [
-  { label: 'Shop',        href: '/shop'        },
+  { label: 'Shop',        href: '/product'        },
   { label: 'Contact',     href: '/contact'     },
   { label: 'About',       href: '/about'       },
   { label: 'Tea Stories', href: '/tea-stories' },

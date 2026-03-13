@@ -9,7 +9,7 @@ export const FOOTER_CONTENT: FooterContent = {
   discoverTitle: 'Discover',
   discoverLinks: [
     { label: 'Home',    href: '/'           },
-    { label: 'Shop',    href: '/shop'       },
+    { label: 'Shop',    href: '/product'       },
     { label: 'About',   href: '/about'      },
     { label: 'Contact', href: '/contact'    },
   ],

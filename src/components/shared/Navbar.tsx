@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Search, ShoppingBag, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { MobileMenuProps, NavbarProps } from "@/types/layout/navbar.types";
@@ -12,10 +13,8 @@ import {
   SCROLL_THRESHOLD_VH,
 } from "@/constants/layout/navbar.constants";
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Mobile Drawer
-// ─────────────────────────────────────────────────────────────────────────────
-function MobileMenu({ isOpen, onClose, links, cartCount }: MobileMenuProps) {
+// ── Mobile Drawer ──────────────────────────────────────────────────────────────
+function MobileMenu({ isOpen, onClose, links, cartCount, scrolled }: MobileMenuProps) {
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "";
     return () => {
@@ -25,7 +24,6 @@ function MobileMenu({ isOpen, onClose, links, cartCount }: MobileMenuProps) {
 
   return (
     <>
-      {/* Backdrop */}
       <div
         aria-hidden="true"
         onClick={onClose}
@@ -35,7 +33,6 @@ function MobileMenu({ isOpen, onClose, links, cartCount }: MobileMenuProps) {
         )}
       />
 
-      {/* Slide-in drawer from left */}
       <nav
         aria-label="Mobile navigation"
         className={cn(
@@ -45,7 +42,6 @@ function MobileMenu({ isOpen, onClose, links, cartCount }: MobileMenuProps) {
           isOpen ? "translate-x-0" : "-translate-x-full",
         )}
       >
-        {/* Header — always use dark logo inside white drawer */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
           <Image
             src={NAVBAR_LOGO.srcDark}
@@ -63,7 +59,6 @@ function MobileMenu({ isOpen, onClose, links, cartCount }: MobileMenuProps) {
           </button>
         </div>
 
-        {/* Links */}
         <ul className="flex-1 py-4 overflow-y-auto">
           {links.map((link) => (
             <li key={link.href}>
@@ -80,7 +75,6 @@ function MobileMenu({ isOpen, onClose, links, cartCount }: MobileMenuProps) {
           ))}
         </ul>
 
-        {/* Cart CTA */}
         <div className="p-5 border-t border-gray-100">
           <Link
             href="/cart"
@@ -105,48 +99,47 @@ function MobileMenu({ isOpen, onClose, links, cartCount }: MobileMenuProps) {
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Main Navbar
-// ─────────────────────────────────────────────────────────────────────────────
+// ── Main Navbar ──────────────────────────────────────────────────────────────
 export default function Navbar({ cartCount = 0 }: NavbarProps) {
-  const [scrolled,   setScrolled]   = useState(false);
+  const pathname = usePathname();
+  const isHomePage = pathname === "/";
+
+  const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
 
   useEffect(() => {
+    if (!isHomePage) {
+      setScrolled(true);
+      return;
+    }
+
     function handleScroll() {
       setScrolled(window.scrollY >= window.innerHeight * SCROLL_THRESHOLD_VH);
     }
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isHomePage]);
 
-  const isTransparent = !scrolled;
+  const isTransparent = isHomePage && !scrolled;
   const iconCls = isTransparent ? "text-white" : "text-gray-800";
   const iconBtn = "p-2 rounded-full transition-colors hover:bg-black/5";
-
-  // ── Logo src swaps based on navbar state ──────────────────────────────────
   const logoSrc = isTransparent ? NAVBAR_LOGO.src : NAVBAR_LOGO.srcDark;
 
   return (
     <>
       <header
         className={cn(
-          "fixed top-0 inset-x-0 z-30 transition-all duration-300",
-          scrolled
-            ? "bg-white shadow-[0_2px_16px_rgba(0,0,0,0.08)] py-2"
-            : "bg-transparent py-3",
+          "fixed top-0 inset-x-0 z-30 transition-all duration-300 md:h-[90px] py-4", // FIXED: Consistent padding
+          !isTransparent
+            ? "bg-white shadow-[0_2px_16px_rgba(0,0,0,0.08)]"
+            : "bg-transparent",
         )}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-          {/* ── DESKTOP ─────────────────────────────────────────────────── */}
           <div className="hidden md:flex items-center justify-between">
-
-            {/* Logo */}
-            <Link href="/" aria-label="Aroma Speciality Tea — Home"
-              className="shrink-0 hover:opacity-80 transition-opacity">
+            <Link href="/" className="shrink-0 hover:opacity-80 transition-opacity">
               <Image
                 src={logoSrc}
                 alt={NAVBAR_LOGO.alt}
@@ -154,14 +147,13 @@ export default function Navbar({ cartCount = 0 }: NavbarProps) {
                 height={NAVBAR_LOGO.height}
                 priority
                 className={cn(
-                  "object-contain transition-all duration-300",
-                  isTransparent ? "w-14 h-14 drop-shadow-md" : "w-14 h-14",
+                  "object-contain transition-all duration-300 w-[100px] h-[60px] ", // FIXED: Locked dimensions
+                  isTransparent ? "drop-shadow-md" : "",
                 )}
               />
             </Link>
 
-            {/* Nav links */}
-            <nav aria-label="Main navigation" className="flex items-center gap-1 lg:gap-2">
+            <nav className="flex items-center gap-1 lg:gap-2">
               {NAV_LINKS.map((link) => (
                 <Link
                   key={link.href}
@@ -181,10 +173,7 @@ export default function Navbar({ cartCount = 0 }: NavbarProps) {
               ))}
             </nav>
 
-            {/* Search + Cart */}
             <div className="flex items-center gap-2">
-
-              {/* Search button */}
               <div className="relative flex items-center">
                 <div className={cn(
                   "absolute right-9 overflow-hidden transition-all duration-300",
@@ -203,25 +192,12 @@ export default function Navbar({ cartCount = 0 }: NavbarProps) {
                     )}
                   />
                 </div>
-                <button
-                  onClick={() => setSearchOpen((p) => !p)}
-                  aria-label="Search"
-                  className={cn(
-                    "p-2 rounded-full transition-all duration-300",
-                  )}
-                >
+                <button onClick={() => setSearchOpen((p) => !p)} className="p-2">
                   <Search className={cn("w-5 h-5", iconCls)} strokeWidth={1.75} />
                 </button>
               </div>
 
-              {/* Cart button — white bordered pill on transparent, plain on white */}
-              <Link
-                href="/cart"
-                aria-label={`Cart — ${cartCount} items`}
-                className={cn(
-                  "relative flex items-center justify-center transition-all duration-300",
-                )}
-              >
+              <Link href="/cart" className="relative p-2">
                 <ShoppingBag className={cn("w-5 h-5", iconCls)} strokeWidth={1.75} />
                 {cartCount > 0 && (
                   <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px]
@@ -234,52 +210,40 @@ export default function Navbar({ cartCount = 0 }: NavbarProps) {
             </div>
           </div>
 
-          {/* ── MOBILE ──────────────────────────────────────────────────── */}
           <div className="flex md:hidden items-center justify-between">
-
-            {/* LEFT: Hamburger + Logo */}
             <div className="flex items-center gap-2">
-              <button onClick={() => setMobileOpen(true)} aria-label="Open menu" className={iconBtn}>
+              <button onClick={() => setMobileOpen(true)} className={iconBtn}>
                 <Menu className={cn("w-5 h-5", iconCls)} strokeWidth={1.75} />
               </button>
-              <Link href="/" aria-label="Aroma Speciality Tea — Home"
-                className="hover:opacity-80 transition-opacity">
+              <Link href="/">
                 <Image
                   src={logoSrc}
                   alt={NAVBAR_LOGO.alt}
                   width={40}
                   height={40}
-                  priority
-                  className={cn(
-                    "object-contain transition-all duration-300",
-                    isTransparent ? "drop-shadow-md" : "",
-                  )}
+                  className={cn("object-contain", isTransparent ? "drop-shadow-md" : "")}
                 />
               </Link>
             </div>
-
-            {/* RIGHT: Search + Cart */}
             <div className="flex items-center gap-0.5">
-              <button onClick={() => setSearchOpen((p) => !p)} aria-label="Search" className={iconBtn}>
+              <button onClick={() => setSearchOpen((p) => !p)} className={iconBtn}>
                 <Search className={cn("w-5 h-5", iconCls)} strokeWidth={1.75} />
               </button>
-              <Link href="/cart" aria-label={`Cart — ${cartCount} items`} className={cn("relative", iconBtn)}>
+              <Link href="/cart" className={cn("relative", iconBtn)}>
                 <ShoppingBag className={cn("w-5 h-5", iconCls)} strokeWidth={1.75} />
                 {cartCount > 0 && (
                   <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px]
                                    flex items-center justify-center px-1 rounded-full
                                    bg-red-500 text-white text-[10px] font-bold ring-1 ring-white">
-                    {cartCount > 99 ? "99+" : cartCount}
+                    {cartCount}
                   </span>
                 )}
               </Link>
             </div>
           </div>
-
         </div>
       </header>
 
-      {/* Mobile Drawer */}
       <MobileMenu
         isOpen={mobileOpen}
         onClose={() => setMobileOpen(false)}
