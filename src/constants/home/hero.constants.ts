@@ -9,7 +9,7 @@ export const HERO_CONTENT: HeroContent = {
 }
 
 export const HERO_IMAGE = {
-  src: '/home/herobanner.png',
+  src: '/home/HeroBanner.png', 
   alt: 'Tea farmer hand-picking fresh leaves on lush Himalayan hillside terraces in Nepal',
 } as const
 
