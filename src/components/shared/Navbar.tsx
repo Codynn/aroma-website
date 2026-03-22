@@ -14,7 +14,8 @@ import {
 } from "@/constants/layout/navbar.constants";
 
 // ── Mobile Drawer ──────────────────────────────────────────────────────────────
-function MobileMenu({ isOpen, onClose, links, cartCount, scrolled }: MobileMenuProps) {
+// ── Mobile Drawer ──────────────────────────────────────────────────────────────
+function MobileMenu({ isOpen, onClose, links }: MobileMenuProps) {
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "";
     return () => {
@@ -24,50 +25,59 @@ function MobileMenu({ isOpen, onClose, links, cartCount, scrolled }: MobileMenuP
 
   return (
     <>
+      {/* Overlay */}
       <div
         aria-hidden="true"
         onClick={onClose}
         className={cn(
-          "fixed inset-0 z-40 bg-black/40 backdrop-blur-sm transition-opacity duration-300",
+          "fixed inset-0 z-40 bg-black/20 backdrop-blur-sm transition-opacity duration-300",
           isOpen ? "opacity-100" : "opacity-0 pointer-events-none",
         )}
       />
 
+      {/* Full-screen Drawer */}
       <nav
         aria-label="Mobile navigation"
         className={cn(
-          "fixed top-0 left-0 h-full w-[75vw] max-w-75 z-50",
-          "flex flex-col bg-white shadow-2xl",
-          "transition-transform duration-300 ease-in-out",
-          isOpen ? "translate-x-0" : "-translate-x-full",
+          "fixed inset-0 z-50 w-full h-full bg-[#7C9043] transition-transform duration-500 ease-in-out px-6 py-8 flex flex-col items-center justify-between text-white",
+          isOpen ? "translate-y-0" : "-translate-y-full", // Vertical slide or change to translate-x if preferred
         )}
       >
-        <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
-          <Image
-            src={NAVBAR_LOGO.srcDark}
-            alt={NAVBAR_LOGO.alt}
-            width={44}
-            height={44}
-            className="object-contain"
-          />
+        {/* Header: Close and Logo */}
+        <div className="w-full flex justify-between items-start">
           <button
             onClick={onClose}
             aria-label="Close menu"
-            className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+            className="p-2 -ml-2 hover:opacity-70 transition-opacity"
           >
-            <X className="w-5 h-5 text-gray-700" />
+            <X className="w-8 h-8 text-white" strokeWidth={1.5} />
           </button>
+          
+          <div className="relative w-[45px] h-[46px]">
+            <Image
+              src={NAVBAR_LOGO.src} // Using light logo for green background
+              alt={NAVBAR_LOGO.alt}
+              fill
+              className="object-contain"
+            />
+          </div>
         </div>
 
-        <ul className="flex-1 py-4 overflow-y-auto">
+        {/* Center Links */}
+        <ul className="flex flex-col items-center gap-6 mb-20">
+          <Link
+                href={`/`}
+                onClick={onClose}
+                className="text-[28px] text-[#F0FAEF] font-semibold font-sora  hover:opacity-80 transition-opacity"
+              >
+                Home
+          </Link>
           {links.map((link) => (
             <li key={link.href}>
               <Link
                 href={link.href}
                 onClick={onClose}
-                className="block px-6 py-4 font-candara font-bold text-[18px]
-                           text-gray-800 hover:text-black hover:bg-gray-50
-                           border-b border-gray-50 transition-colors"
+                className="text-[28px] text-[#F0FAEF] font-semibold font-sora  hover:opacity-80 transition-opacity"
               >
                 {link.label}
               </Link>
@@ -75,24 +85,22 @@ function MobileMenu({ isOpen, onClose, links, cartCount, scrolled }: MobileMenuP
           ))}
         </ul>
 
-        <div className="p-5 border-t border-gray-100">
-          <Link
-            href="/cart"
-            onClick={onClose}
-            className="flex items-center justify-center gap-2 w-full py-3
-                       rounded-full bg-black text-white font-sora font-bold
-                       text-sm tracking-wide hover:bg-gray-900 transition-colors"
-          >
-            <ShoppingBag className="w-4 h-4" />
-            Cart
-            {cartCount > 0 && (
-              <span className="ml-1 bg-red-500 text-white text-[10px] font-bold
-                               rounded-full min-w-[18px] h-[18px] flex items-center
-                               justify-center px-1">
-                {cartCount > 99 ? "99+" : cartCount}
-              </span>
-            )}
-          </Link>
+        {/* Footer: Socials */}
+        <div className="w-full flex flex-col items-center gap-4 pb-10">
+          <span className="text-[18px] text-[#D4ECD1] font-bold font-sora ">
+            Follow us on
+          </span>
+          <div className="flex items-center gap-4">
+            <Link href="#" className="hover:scale-110 transition-transform">
+               <Image src={`/Images/facebook-nav.png`} width={29} height={28} alt="facebook" />
+            </Link>
+            <Link href="#" className="hover:scale-110 transition-transform">
+               <Image src={`/Images/tiktok-nav.png`} width={29} height={28} alt="facebook" />
+            </Link>
+            <Link href="#" className="hover:scale-110 transition-transform">
+              <Image src={`/Images/insta-nav.png`} width={29} height={28} alt="facebook" />
+            </Link>
+          </div>
         </div>
       </nav>
     </>
@@ -131,13 +139,13 @@ export default function Navbar({ cartCount = 0 }: NavbarProps) {
     <>
       <header
         className={cn(
-          "fixed top-0 inset-x-0 z-30 transition-all duration-300 md:h-[90px] py-4", // FIXED: Consistent padding
+          "fixed top-0 inset-x-0 z-30 transition-all duration-300 md:h-[90px]  py-2 md:py-4", // FIXED: Consistent padding
           !isTransparent
-            ? "bg-white shadow-[0_2px_16px_rgba(0,0,0,0.08)]"
-            : "bg-transparent",
+            ? "bg-white border-b border-[#D6D6D6]  "
+            : "bg-transparent border-b border-[#297CCD]",
         )}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto ">
           <div className="hidden md:flex items-center justify-between">
             <Link href="/" className="shrink-0 hover:opacity-80 transition-opacity">
               <Image
@@ -153,13 +161,13 @@ export default function Navbar({ cartCount = 0 }: NavbarProps) {
               />
             </Link>
 
-            <nav className="flex items-center gap-1 lg:gap-2">
+            <nav className="flex items-center gap-1 lg:gap-12">
               {NAV_LINKS.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    "font-sora font-bold text-[16px] lg:text-[18px] px-4 py-2 transition-colors duration-200",
+                    "font-sora font-bold text-[16px] lg:text-[20px]  transition-colors duration-200",
                     "relative after:absolute after:bottom-0 after:left-4 after:right-4",
                     "after:h-[2px] after:rounded-full after:scale-x-0 hover:after:scale-x-100",
                     "after:transition-transform after:duration-200",
@@ -173,7 +181,7 @@ export default function Navbar({ cartCount = 0 }: NavbarProps) {
               ))}
             </nav>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-9">
               <div className="relative flex items-center">
                 <div className={cn(
                   "absolute right-9 overflow-hidden transition-all duration-300",
@@ -193,12 +201,12 @@ export default function Navbar({ cartCount = 0 }: NavbarProps) {
                   />
                 </div>
                 <button onClick={() => setSearchOpen((p) => !p)} className="p-2">
-                  <Search className={cn("w-5 h-5", iconCls)} strokeWidth={1.75} />
+                  <Search className={cn("w-7 h-7", iconCls)} strokeWidth={1.75} />
                 </button>
               </div>
 
               <Link href="/cart" className="relative p-2">
-                <ShoppingBag className={cn("w-5 h-5", iconCls)} strokeWidth={1.75} />
+                <Image src={`/Images/cartIcon-nav.png`} className={cn("w-7 h-7", iconCls)} width={28} height={28} alt="cartIcon-nav" />
                 {cartCount > 0 && (
                   <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px]
                                    flex items-center justify-center px-1 rounded-full
@@ -210,27 +218,27 @@ export default function Navbar({ cartCount = 0 }: NavbarProps) {
             </div>
           </div>
 
-          <div className="flex md:hidden items-center justify-between">
-            <div className="flex items-center gap-2">
+          <div className="flex md:hidden items-center justify-between px-4">
+            <div className="flex items-center gap-6">
               <button onClick={() => setMobileOpen(true)} className={iconBtn}>
-                <Menu className={cn("w-5 h-5", iconCls)} strokeWidth={1.75} />
+                <Menu className={cn("w-[19px] h-[14px]", iconCls)} strokeWidth={1.75} />
               </button>
               <Link href="/">
                 <Image
                   src={logoSrc}
                   alt={NAVBAR_LOGO.alt}
-                  width={40}
-                  height={40}
+                  width={45}
+                  height={46}
                   className={cn("object-contain", isTransparent ? "drop-shadow-md" : "")}
                 />
               </Link>
             </div>
-            <div className="flex items-center gap-0.5">
+            <div className="flex items-center gap-6">
               <button onClick={() => setSearchOpen((p) => !p)} className={iconBtn}>
                 <Search className={cn("w-5 h-5", iconCls)} strokeWidth={1.75} />
               </button>
               <Link href="/cart" className={cn("relative", iconBtn)}>
-                <ShoppingBag className={cn("w-5 h-5", iconCls)} strokeWidth={1.75} />
+                <Image src={`/Images/cartIcon-nav.png`} className={cn("w-5 h-5", iconCls)} width={20} height={20} alt="cartIcon-nav" />
                 {cartCount > 0 && (
                   <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px]
                                    flex items-center justify-center px-1 rounded-full

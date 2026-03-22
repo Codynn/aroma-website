@@ -29,7 +29,7 @@ export default function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning className={`${sora.variable}`}>
-      <body className="font-candara min-h-screen bg-white text-gray-900 antialiased flex flex-col">
+      <body className="font-sora min-h-screen bg-white text-gray-900 antialiased flex flex-col">
         <QueryProvider>
           <Navbar />
 

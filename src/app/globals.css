@@ -171,10 +171,7 @@
   }
 
   /* Headings → Sora */
-  h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-sora), 'Helvetica Neue', Arial, sans-serif;
-    @apply font-bold leading-tight tracking-tight;
-  }
+ 
 }
 
 /* ── Hero Animations ─────────────────────────────────────────────────────────── */

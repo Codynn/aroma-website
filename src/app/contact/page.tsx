@@ -17,23 +17,23 @@ const ContinuousContact = () => {
       <section className="flex flex-col md:flex-row gap-12 items-center">
         
         {/* Form Side */}
-        <div className="flex-1 space-y-6 w-full flex flex-col">
+        <div className="flex-1  w-full flex flex-col">
           {/* Title stays at top (Order 1) */}
           <div className="order-1">
             <h1 className="font-bold md:text-[100px] text-[38px] text-[#9BA87D] leading-0 mt-2">
               Contact Us
             </h1>
             <h1 className="font-bold md:text-[100px] text-[38px] scale-y-[-1] bg-gradient-to-t from-[#9BA87D]/12 to-transparent 
-                   bg-clip-text text-transparent select-none  -mt-1 ">
+                   bg-clip-text text-transparent select-none  -mt-1  ">
               Contact Us
             </h1>
           </div>
 
           {/* Form moves below image on mobile (Order 3) */}
           <form className="order-3 md:order-2 space-y-3 max-w-sm w-full">
-            <input type="text" placeholder="Full Name" className="w-full p-3 rounded-lg border border-gray-200" />
-            <input type="email" placeholder="Enter Email" className="w-full p-3 rounded-lg border border-gray-200" />
-            <textarea placeholder="Any Message" rows={4} className="w-full p-3 rounded-lg border border-gray-200" />
+            <input type="text" placeholder="Full Name" className="w-full  px-5 py-[17px] text-[20px] text-[#989898] font-semibold rounded-[16px] border border-[#869E4A]" />
+            <input type="email" placeholder="Enter Email" className="w-full px-5 py-[17px] font-semibold text-[20px] text-[#989898] rounded-[16px] border border-[#869E4A]" />
+            <textarea placeholder="Any Message" rows={4} className="w-full p-3 rounded-[16px] font-semibold text-[20px] text-[#989898] border border-[#869E4A]" />
             <div className='flex w-full justify-center items-center '>
               <button className="bg-[#869E4A] text-white px-8 py-2 rounded-full shadow-md mt-3 md:mt-4">
                 Send Message
@@ -118,15 +118,15 @@ const ContinuousContact = () => {
             <div className="pt-6">
               <p className="font-bold text-xl mb-4 text-center lg:text-left">Follow us on</p>
               <div className="flex justify-center lg:justify-start gap-6">
-                <Facebook className="w-6 h-6 cursor-pointer hover:text-[#869E4A] transition-colors" />
-                <Music2 className="w-6 h-6 cursor-pointer hover:text-[#869E4A] transition-colors" /> {/* TikTok icon alternative */}
-                <Instagram className="w-6 h-6 cursor-pointer hover:text-[#869E4A] transition-colors" />
+                <Image src={`/Images/facebook.png`} width={24} height={24} alt='facebook' className="w-6 h-6 cursor-pointer hover:text-[#869E4A] transition-colors" />
+                <Image src={`/Images/tiktok.png`} width={24} height={24} alt='facebook' className="w-6 h-6 cursor-pointer hover:text-[#869E4A] transition-colors" />
+                <Image src={`/Images/instagram.png`} width={24} height={24} alt='facebook' className="w-6 h-6 cursor-pointer hover:text-[#869E4A] transition-colors" />
               </div>
             </div>
           </div>
 
           {/* Map Container */}
-          <div className="flex-1 w-full h-[400px] md:h-[500px] rounded-[40px] overflow-hidden border-8 border-white shadow-2xl relative">
+          <div className="flex-1 w-full h-[297px] md:h-[547px] rounded-[16px] overflow-hidden  relative">
             <Image 
               src="/Images/location.png" 
               alt="Aroma Speciality Tea Industry Location" 
