@@ -1,6 +1,7 @@
 
 import CustomerReviewsSection from "@/components/home/CustomerReviewSection";
 import HeroSection from "@/components/home/HeroSection";
+import JourneySection from "@/components/home/Journey";
 import MostValuedTeas from "@/components/home/MostValuedTeasSection";
 import ServingMarketsSection from "@/components/home/ServingMarketSection";
 import TeaStoriesSection from "@/components/home/TeaStoriesSection";
@@ -10,6 +11,7 @@ export default function HomePage() {
     <main className="relative w-full font-outfit">
       <HeroSection />
       <MostValuedTeas/>
+      <JourneySection />
       <ServingMarketsSection/>
       <CustomerReviewsSection/>
       <TeaStoriesSection/>

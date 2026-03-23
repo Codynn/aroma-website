@@ -44,7 +44,7 @@ function MobileMenu({ isOpen, onClose, links }: MobileMenuProps) {
         )}
       >
         {/* Header: Close and Logo */}
-        <div className="w-full flex justify-between items-start">
+        <div className="w-full flex justify-between  items-start">
           <button
             onClick={onClose}
             aria-label="Close menu"
@@ -139,7 +139,7 @@ export default function Navbar({ cartCount = 0 }: NavbarProps) {
     <>
       <header
         className={cn(
-          "fixed top-0 inset-x-0 z-30 transition-all duration-300 md:h-[90px]  py-2 md:py-4", // FIXED: Consistent padding
+          "fixed top-0 inset-x-0 z-30 transition-all duration-300 md:h-[90px] h-[62px]  py-2 md:py-4", // FIXED: Consistent padding
           !isTransparent
             ? "bg-white border-b border-[#D6D6D6]  "
             : "bg-transparent border-b border-[#297CCD]",
@@ -206,7 +206,9 @@ export default function Navbar({ cartCount = 0 }: NavbarProps) {
               </div>
 
               <Link href="/cart" className="relative p-2">
-                <Image src={`/Images/cartIcon-nav.png`} className={cn("w-7 h-7", iconCls)} width={28} height={28} alt="cartIcon-nav" />
+               {isTransparent ? <Image src={`/Images/cartIcon-nav.png`} className={cn("w-7 h-7", iconCls)} width={28} height={28} alt="cartIcon-nav" />:
+                <Image src={`/Images/cartIcon-nav2.png`} className={cn("w-7 h-7", iconCls)} width={28} height={28} alt="cartIcon-nav" />}
+                
                 {cartCount > 0 && (
                   <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px]
                                    flex items-center justify-center px-1 rounded-full
@@ -218,7 +220,7 @@ export default function Navbar({ cartCount = 0 }: NavbarProps) {
             </div>
           </div>
 
-          <div className="flex md:hidden items-center justify-between px-4">
+          <div className="flex  md:hidden items-center justify-between px-6  ">
             <div className="flex items-center gap-6">
               <button onClick={() => setMobileOpen(true)} className={iconBtn}>
                 <Menu className={cn("w-[19px] h-[14px]", iconCls)} strokeWidth={1.75} />
@@ -229,7 +231,7 @@ export default function Navbar({ cartCount = 0 }: NavbarProps) {
                   alt={NAVBAR_LOGO.alt}
                   width={45}
                   height={46}
-                  className={cn("object-contain", isTransparent ? "drop-shadow-md" : "")}
+                  className={cn("object-contain w-[45px] h-[46px]", isTransparent ? "drop-shadow-md" : "")}
                 />
               </Link>
             </div>
@@ -238,7 +240,8 @@ export default function Navbar({ cartCount = 0 }: NavbarProps) {
                 <Search className={cn("w-5 h-5", iconCls)} strokeWidth={1.75} />
               </button>
               <Link href="/cart" className={cn("relative", iconBtn)}>
-                <Image src={`/Images/cartIcon-nav.png`} className={cn("w-5 h-5", iconCls)} width={20} height={20} alt="cartIcon-nav" />
+                {isTransparent ?  <Image src={`/Images/cartIcon-nav.png`} className={cn("w-5 h-5", iconCls)} width={20} height={20} alt="cartIcon-nav" /> :  <Image src={`/Images/cartIcon-nav2.png`} className={cn("w-5 h-5", iconCls)} width={20} height={20} alt="cartIcon-nav" />}
+               
                 {cartCount > 0 && (
                   <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px]
                                    flex items-center justify-center px-1 rounded-full

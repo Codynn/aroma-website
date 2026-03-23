@@ -125,10 +125,11 @@ const CartPage: React.FC = () => {
               <p className="text-sm text-gray-500 mb-8 leading-relaxed">
                 Note: Taxes, shipping fees, and discount codes will be applied at checkout.
               </p>
-
-              <button className="w-full bg-[#7A933E] hover:bg-[#6b8235] text-white font-bold py-4 rounded-xl transition-all mb-4 shadow-sm">
+              <Link href={`/checkout`}>
+              <button className="w-full bg-[#7A933E] hover:bg-[#6b8235] text-white cursor-pointer font-bold py-4 rounded-xl transition-all mb-4 shadow-sm">
                 Checkout
-              </button>
+              </button> </Link>
+              
 
               <button className="w-full flex items-center justify-center gap-2 text-gray-700 font-medium hover:gap-3 transition-all">
                 Continue Shopping <MoveRight size={20} />
