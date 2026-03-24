@@ -13,6 +13,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose }) => {
 
   const handleGoogleLogin = (): void => {
     // 1. Detect environment to set the correct redirect base
+    const baseUrI = process.env.NEXT_PUBLIC_BASE_URL;
     const isDev = window.location.hostname === 'localhost';
     const baseUrl = isDev ? 'http://localhost:3000' : 'https://codynn.com';
     
@@ -23,7 +24,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose }) => {
     const encodedRedirect = encodeURIComponent(successPath);
 
     // 4. Construct the final API URL
-    const authUrl = `https://api.trackynn.com/staging/user/initiate-google-auth?role=CUSTOMER&redirectTo=${encodedRedirect}`;
+    const authUrl = `${baseUrI}/user/initiate-google-auth?role=CUSTOMER&redirectTo=${encodedRedirect}`;
     
     window.location.href = authUrl;
   };

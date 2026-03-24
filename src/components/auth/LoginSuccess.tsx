@@ -3,6 +3,7 @@
 import { useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Cookies from 'js-cookie';
+import {toast} from 'sonner'
 
 function SuccessContent() {
   const router = useRouter();
@@ -19,6 +20,7 @@ function SuccessContent() {
 
     // 3. Wait 3 seconds then go home
     const timer = setTimeout(() => {
+     toast.success('Login Successfull')
       router.push('/'); 
     }, 3000);
 
@@ -35,9 +37,9 @@ function SuccessContent() {
       <h1 className="text-2xl font-black text-gray-900 font-sora">Login Successful!</h1>
       <p className="text-gray-500 mt-2 font-sora">Setting up your session and redirecting...</p>
       <div className="mt-8 flex justify-center gap-1">
-        <div className="w-2 h-2 bg-green-500 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-        <div className="w-2 h-2 bg-green-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-        <div className="w-2 h-2 bg-green-500 rounded-full animate-bounce"></div>
+        <div className="w-2 h-2 bg-[#77923b] rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+        <div className="w-2 h-2 bg-[#77923b] rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+        <div className="w-2 h-2 bg-[#77923b] rounded-full animate-bounce"></div>
       </div>
     </div>
   );
