@@ -1,18 +1,19 @@
 import { NavLink } from "@/types/layout/navbar.types"
 
 export const NAV_LINKS: NavLink[] = [
+  { label: 'Home', href: '/' },
   { label: 'Shop',        href: '/product'        },
   { label: 'Contact',     href: '/contact'     },
   { label: 'About',       href: '/about'       },
-  { label: 'Tea Stories', href: '/tea-stories' },
+  
 ]
 
 export const NAVBAR_LOGO = {
   src:     '/home/logo.svg',      // white logo — transparent navbar
-  srcDark: '/Images/icon2.png', // dark logo  — white navbar (scrolled)
+  srcDark: '/Images/blacklogo.svg', // dark logo  — white navbar (scrolled)
   alt:     'Aroma Speciality Tea',
-  width:   56,
-  height:  56,
+  width:   99,
+  height:  60,
 } as const
 
 // Trigger white bg when user has scrolled 80% of viewport height

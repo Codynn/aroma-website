@@ -21,7 +21,7 @@ export default function JourneySection() {
           
           {/* ── Left: Text Content ── */}
           <div className="w-full lg:w-[45%] text-left order-2 lg:order-1">
-            <h2 className="text-[#77923B] hidden md:block  font-sora font-bold  md:text-[54px] mb-6 leading-tight">
+            <h2 className="text-[#77923B] hidden lg:block  font-sora font-bold  md:text-[54px] mb-6 leading-tight">
               The Journey of Aroma
             </h2>
             <p className="text-[#555555] font-sora text-[14px] md:text-[16px] leading-[1.8] mb-10 max-w-[550px]">
@@ -42,7 +42,7 @@ export default function JourneySection() {
 
           {/* ── Right: Image Collage ── */}
           <div className="w-full lg:w-[55%] order-1 lg:order-2">
-            <h2 className="text-[#77923B] md:hidden  font-sora font-bold text-[25px] text-center mb-6 leading-tight">
+            <h2 className="text-[#77923B] lg:hidden md:text-[54px]  font-sora font-bold text-[25px] text-center mb-6 leading-tight">
               The Journey of Aroma
             </h2>
             {/* Desktop Layout: Removed aspect-[4/3] and set h-[660px] to contain all images */}
@@ -54,7 +54,17 @@ export default function JourneySection() {
                   width={303} 
                   height={236} 
                   alt="Aroma Tea Cup" 
-                  className="object-contain drop-shadow-2xl"
+                  className="object-contain "
+                />
+              </div>
+
+              <div className="absolute top-[206px] left-[166px] w-[42px] h-[42px] z-20">
+                <Image 
+                  src="/Images/spark.png" 
+                  width={42} 
+                  height={42} 
+                  alt="Aroma Tea Cup" 
+                  className="object-contain "
                 />
               </div>
 
@@ -79,6 +89,16 @@ export default function JourneySection() {
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[167px] h-[130px] z-10">
                   <Image src="/Images/journey-cup.png" width={167} height={130} alt="Cup" className="object-contain" />
                 </div>
+
+                <div className="absolute top-[113px] left-[91px] w-[20px] h-[22px] z-20">
+                <Image 
+                  src="/Images/spark.png" 
+                  width={20} 
+                  height={22} 
+                  alt="Aroma Tea Cup" 
+                  className="object-contain drop-shadow-2xl"
+                />
+              </div>
 
                 {/* Simplified Mobile Collage */}
                 <div className="absolute  left-[42px] top-[0px] w-[146px] h-[93px] rounded-[16px] overflow-hidden">

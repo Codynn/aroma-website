@@ -1,8 +1,13 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { Minus, Plus, MoveRight } from 'lucide-react'; 
 import RelatedProducts from '@/components/produt-detail/you-might-also-like';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
+import LoginPopup from '@/components/auth/Login'; // Adjust this path to your component location
 
 // 1. Define the Interface for Cart Items
 interface CartItem {
@@ -14,6 +19,9 @@ interface CartItem {
 }
 
 const CartPage: React.FC = () => {
+  const router = useRouter();
+  const [isLoginOpen, setIsLoginOpen] = useState<boolean>(false);
+
   // 2. Apply the Type to the array
   const cartItems: CartItem[] = [
     {
@@ -44,11 +52,21 @@ const CartPage: React.FC = () => {
       weight: "100gm",
       img: '/Images/emerald-green.png'
     }
-    
   ];
 
   const isEmpty: boolean = cartItems.length === 0;
   const subtotal: number = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+
+  // Functionality: Check for token before navigation
+  const handleCheckoutClick = () => {
+    const token = Cookies.get('token'); // Ensure this matches your cookie key name
+
+    if (token) {
+      router.push('/checkout');
+    } else {
+      setIsLoginOpen(true);
+    }
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-10 font-sora">
@@ -56,7 +74,7 @@ const CartPage: React.FC = () => {
 
       {isEmpty ? (
         /* --- EMPTY CART STATE --- */
-        <div className="flex flex-col items-center justify-center  text-center">
+        <div className="flex flex-col items-center justify-center text-center">
           <div className="relative w-[169px] h-[193px] md:w-[230px] md:h-[263px] mb-8">
             <Image 
               src="/Images/cartIcon.png" 
@@ -71,11 +89,11 @@ const CartPage: React.FC = () => {
             Discover our premium Himalayan organic teas, hand-harvested from Ilam, Nepal.
           </p>
           <Link href={`/product`}> 
-          <button className="bg-[#7A933E] hover:bg-[#6b8235] text-white text-[18px] md:text-[20px]  py-2 px-10 rounded-[16px] transition-all  flex items-center gap-2 cursor-pointer">
-            Browse Our Teas
-            <MoveRight size={20} />
-          </button></Link>
-          
+            <button className="bg-[#7A933E] hover:bg-[#6b8235] text-white text-[18px] md:text-[20px] py-2 px-10 rounded-[16px] transition-all flex items-center gap-2 cursor-pointer">
+              Browse Our Teas
+              <MoveRight size={20} />
+            </button>
+          </Link>
         </div>
       ) : (
         /* --- ACTIVE CART STATE --- */
@@ -125,11 +143,14 @@ const CartPage: React.FC = () => {
               <p className="text-sm text-gray-500 mb-8 leading-relaxed">
                 Note: Taxes, shipping fees, and discount codes will be applied at checkout.
               </p>
-              <Link href={`/checkout`}>
-              <button className="w-full bg-[#7A933E] hover:bg-[#6b8235] text-white cursor-pointer font-bold py-4 rounded-xl transition-all mb-4 shadow-sm">
+
+              {/* Functional Button replaces Link */}
+              <button 
+                onClick={handleCheckoutClick}
+                className="w-full bg-[#7A933E] hover:bg-[#6b8235] text-white cursor-pointer font-bold py-4 rounded-xl transition-all mb-4 shadow-sm"
+              >
                 Checkout
-              </button> </Link>
-              
+              </button>
 
               <button className="w-full flex items-center justify-center gap-2 text-gray-700 font-medium hover:gap-3 transition-all">
                 Continue Shopping <MoveRight size={20} />
@@ -140,6 +161,12 @@ const CartPage: React.FC = () => {
       )}
 
       <RelatedProducts />
+
+      {/* Login Popup Controlled by State */}
+      <LoginPopup 
+        isOpen={isLoginOpen} 
+        onClose={() => setIsLoginOpen(false)} 
+      />
     </div>
   );
 };
