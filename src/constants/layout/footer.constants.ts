@@ -22,8 +22,8 @@ export const FOOTER_CONTENT: FooterContent = {
 
   contactInfo: [
     { id: 1, icon: 'location', text: 'Fikkal, Ilam, Nepal'  },
-    { id: 2, icon: 'mail',    text: 'example@gmail.com',   href: 'mailto:example@gmail.com'   },
-    { id: 3, icon: 'whatsapp',    text: '+977-9761669953',      href: 'tel:+9779761669953'         },
+    { id: 2, icon: 'mail',    text: 'aromateanepal@gmail.com',   href: 'https://mail.google.com/mail/?view=cm&fs=1&to=aromateanepal@gmail.com&su=Standard%20Package%20Setup&body=I%20want%20to%20setup%20standard%20package%20for%20my%20business'   },
+    { id: 3, icon: 'whatsapp',    text: '+977-9761669953',      href: 'https://api.whatsapp.com/send/?phone=9761669953&text=I%20want%20to%20setup%20standard%20package%20for%20my%20business'         },
   ],
 
   copyright: '© 2026 Aroma Speciality. All Right Reserved.',

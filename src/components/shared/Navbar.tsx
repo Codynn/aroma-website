@@ -150,8 +150,8 @@ export default function Navbar({ cartCount = 0 }: NavbarProps) {
             : "bg-transparent border-b border-[#297CCD]",
         )}
       >
-        <div className="max-w-7xl mx-auto">
-          <div className="hidden lg:flex items-center justify-between px-4 xl:px-0">
+        <div className="max-w-7xl mx-auto  ">
+          <div className="hidden lg:flex items-center justify-between ">
             <Link href="/" className="shrink-0 hover:opacity-80 transition-opacity">
               <Image
                 src={logoSrc}

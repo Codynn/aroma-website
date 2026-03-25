@@ -15,7 +15,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose }) => {
     // 1. Detect environment to set the correct redirect base
     const baseUrI = process.env.NEXT_PUBLIC_BASE_URL;
     const isDev = window.location.hostname === 'localhost';
-    const baseUrl = isDev ? 'http://localhost:3000' : 'https://codynn.com';
+    const baseUrl = isDev ? 'http://localhost:3000' : 'https://aromateanepal.com.np';
     
     // 2. Define the path for your Success Component
     const successPath = `${baseUrl}/login-success`;
