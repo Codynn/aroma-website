@@ -23,7 +23,7 @@ const ContinuousContact = () => {
     const formData = new FormData(event.currentTarget);
     
     // Add your Access Key here
-    formData.append("access_key", process.env.WEB3_FORM_KEY || '');
+    formData.append("access_key", process.env.NEXT_PUBLIC_FORM_KEY || '');
     formData.append("subject", "New Contact Form Submission - Aroma Tea");
 
     try {
