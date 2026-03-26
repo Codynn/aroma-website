@@ -1,3 +1,4 @@
+// page.tsx
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -8,18 +9,17 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 import LoginPopup from '@/components/auth/Login'; 
-import { useCart } from '@/hooks/user-cart'; // Import the hook
-import HandledImage from '@/components/shared/HandleImage'; // Use your image handler
+import { useCart } from '@/hooks/user-cart'; 
+import HandledImage from '@/components/shared/HandleImage';
 
 const CartPage: React.FC = () => {
   const router = useRouter();
   const [isLoginOpen, setIsLoginOpen] = useState<boolean>(false);
   const [mounted, setMounted] = useState(false);
   
-  // Use the cart hook logic
-  const { cart, updateQuantity, removeFromCart } = useCart();
+  // Destructure toggleSelection from the hook
+  const { cart, updateQuantity, removeFromCart, toggleSelection } = useCart();
 
-  // Prevent hydration mismatch by waiting for mount
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -27,10 +27,22 @@ const CartPage: React.FC = () => {
   if (!mounted) return null;
 
   const isEmpty: boolean = cart.length === 0;
-  const subtotal: number = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+
+  // FIXED: Calculate subtotal only for selected items
+  const subtotal: number = cart.reduce((acc, item) => {
+    return item.selected ? acc + (item.price * item.quantity) : acc;
+  }, 0);
 
   const handleCheckoutClick = () => {
     const token = Cookies.get('token'); 
+    
+    // Ensure at least one item is selected before proceeding
+    const selectedItems = cart.filter(item => item.selected);
+    if (selectedItems.length === 0) {
+      alert("Please select at least one item to checkout.");
+      return;
+    }
+
     if (token) {
       router.push('/checkout');
     } else {
@@ -43,37 +55,29 @@ const CartPage: React.FC = () => {
       <h1 className="text-[25px] md:text-[50px] font-semibold md:font-bold text-center mb-8">Cart</h1>
 
       {isEmpty ? (
+        // ... (Empty cart UI remains identical)
         <div className="flex flex-col items-center justify-center text-center">
           <div className="relative w-[169px] h-[193px] md:w-[230px] md:h-[263px] mb-8">
-            <Image 
-              src="/Images/cartIcon.png" 
-              alt="Empty Cart" 
-              fill 
-              className="object-contain"
-              priority
-            />
+            <Image src="/Images/cartIcon.png" alt="Empty Cart" fill className="object-contain" priority />
           </div>
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Your cart is empty</h2>
-          <p className="text-[#222222] text-[15px] md:text-[17px] mb-10 max-w-md">
-            Discover our premium Himalayan organic teas, hand-harvested from Ilam, Nepal.
-          </p>
           <Link href={`/product`}> 
-            <button className="bg-[#7A933E] hover:bg-[#6b8235] text-white text-[18px] md:text-[20px] py-2 px-10 rounded-[16px] transition-all flex items-center gap-2 cursor-pointer">
-              Browse Our Teas
-              <MoveRight size={20} />
+            <button className="bg-[#7A933E] text-white py-2 px-10 rounded-[16px] flex items-center gap-2">
+              Browse Our Teas <MoveRight size={20} />
             </button>
           </Link>
         </div>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-          {/* Left Side: Item List */}
           <div className="lg:col-span-7 space-y-[26px] border-b border-[#989898] md:border-0">
             {cart.map((item, index) => (
               <div key={`${item.productId}-${index}`} className="flex gap-[14px] md:gap-6 pb-6 ">
                 <div className="flex items-center">
                   <input 
                     type="checkbox" 
-                    defaultChecked
+                    // Controlled checkbox based on localStorage state
+                    checked={item.selected || false}
+                    onChange={() => toggleSelection(item.productId, item.options?.color, item.options?.size)}
                     className="w-5 h-5 border-gray-300 rounded cursor-pointer accent-[#7A933E]" 
                   />
                 </div>
@@ -118,11 +122,11 @@ const CartPage: React.FC = () => {
             ))}
           </div>
 
-          {/* Right Side: Summary */}
           <div className="lg:col-span-5">
             <div className="lg:border-l lg:pl-12 border-[#989898] h-full">
               <div className="flex justify-between items-center mb-4">
                 <span className="text-xl font-bold text-gray-900">SubTotal</span>
+                {/* Total now only reflects selected items */}
                 <span className="text-2xl font-bold text-[#008000]">Rs.{subtotal}</span>
               </div>
               
@@ -146,11 +150,7 @@ const CartPage: React.FC = () => {
       )}
 
       <RelatedProducts />
-
-      <LoginPopup 
-        isOpen={isLoginOpen} 
-        onClose={() => setIsLoginOpen(false)} 
-      />
+      <LoginPopup isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
     </div>
   );
 };

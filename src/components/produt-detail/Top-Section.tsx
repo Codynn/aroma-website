@@ -32,9 +32,11 @@ export default function ProductDetail({ id }: TopSectionProps) {
   const currentPrice = product.sellingPrice;
   const originalPrice = Math.round(currentPrice * 1.16);
   
-  const displayImages = product.images?.length > 0 
-    ? product.images.map((img: any) => img.imageUrl) 
-    : [product.imageUrl];
+  // FIX: Combines main imageUrl with the secondaryImageUrls array from your API response
+  const displayImages = [
+    product.imageUrl,
+    ...(product.secondaryImageUrls || [])
+  ].filter(Boolean);
 
   const handleAddToCart = () => {
     addToCart({
@@ -112,8 +114,8 @@ export default function ProductDetail({ id }: TopSectionProps) {
 
           <div className="flex items-center gap-3 mb-3 lg:mb-4">
             <span className="text-[34px] lg:text-[42px] font-bold text-[#77923B]">Rs.{currentPrice}</span>
-            <span className="text-[34px] lg:text-[42px] font-bold text-gray-400 ">{originalPrice}</span>
-            <span className="px-3 py-1 bg-[#DB3F34] text-white text-[13px] lg:text-[18px] rounded-[8px]">16% Discount</span>
+            <span className="text-[34px] lg:text-[42px] font-bold text-gray-400  ml-2">{originalPrice}</span>
+            <span className="px-3 py-1 bg-[#DB3F34] text-white text-[13px] lg:text-[18px] rounded-[8px] ml-4">16% Discount</span>
           </div>
 
           <div className="flex items-center gap-6 mb-3">

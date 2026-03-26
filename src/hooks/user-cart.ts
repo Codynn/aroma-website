@@ -1,3 +1,4 @@
+// user-cart.ts
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 
@@ -7,6 +8,7 @@ export interface CartItem {
   price: number;
   quantity: number;
   image: string;
+  selected?: boolean; // Added this property
   options?: {
     color?: string;
     size?: string;
@@ -30,6 +32,7 @@ export const useCart = () => {
   const saveCart = (updatedCart: CartItem[]) => {
     setCart(updatedCart);
     localStorage.setItem("cart", JSON.stringify(updatedCart));
+    window.dispatchEvent(new Event("cartUpdated"));
   };
 
   const addToCart = (item: CartItem) => {
@@ -43,17 +46,30 @@ export const useCart = () => {
     let updatedCart = [...cart];
 
     if (existingItemIndex > -1) {
-      updatedCart[existingItemIndex].quantity += item.quantity;
+      const newQty = updatedCart[existingItemIndex].quantity + item.quantity;
+      updatedCart[existingItemIndex] = { ...updatedCart[existingItemIndex], quantity: newQty };
       toast.success(`Updated quantity for ${item.title}`);
     } else {
-      updatedCart.push(item);
+      // Default new items to be selected
+      updatedCart.push({ ...item, selected: true });
       toast.success(`${item.title} added to cart`);
     }
 
     saveCart(updatedCart);
   };
 
-  // Fixed: Now accepts color and size to match the call from the UI
+  // Added toggleSelection function
+  const toggleSelection = (productId: string, color?: string, size?: string) => {
+    const updatedCart = cart.map((item) =>
+      item.productId === productId && 
+      item.options?.color === color && 
+      item.options?.size === size
+        ? { ...item, selected: !item.selected } 
+        : item
+    );
+    saveCart(updatedCart);
+  };
+
   const removeFromCart = (productId: string, color?: string, size?: string) => {
     const updatedCart = cart.filter(
       (item) => 
@@ -65,7 +81,6 @@ export const useCart = () => {
     toast.info("Item removed from cart");
   };
 
-  // Fixed: Now accepts color and size to find the exact item to update
   const updateQuantity = (productId: string, newQty: number, color?: string, size?: string) => {
     if (newQty < 1) return;
     const updatedCart = cart.map((item) =>
@@ -79,8 +94,10 @@ export const useCart = () => {
   };
 
   const clearCart = () => {
-    saveCart([]);
+    setCart([]);
+    localStorage.removeItem("cart");
+    window.dispatchEvent(new Event("cartUpdated"));
   };
 
-  return { cart, addToCart, removeFromCart, updateQuantity, clearCart };
+  return { cart, addToCart, removeFromCart, updateQuantity, toggleSelection, clearCart };
 };

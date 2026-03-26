@@ -8,7 +8,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   const isHome = pathname === "/";
 
   return (
-    <main className={cn("flex-1", !isHome && "pt-[42px] lg:pt-16")}>
+    <main className={cn("flex-1", !isHome && "mt-[42px] lg:mt-16")}>
       {children}
     </main>
   );

@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import Cookies from "js-cookie";
 import LoginPopup from "@/components/auth/Login";
 import { useLogout } from "@/hooks/use-auth"; 
+import UserAvatar from "./UserAvatar"; // Import the component
 import { MobileMenuProps, NavbarProps } from "@/types/layout/navbar.types";
 import {
   NAV_LINKS,
@@ -81,10 +82,10 @@ function MobileMenu({ isOpen, onClose, links, cartCount, scrolled }: MobileMenuP
           </span>
           <div className="flex items-center gap-4">
             <Link href="#" className="hover:scale-110 transition-transform">
-               <Image src={`/Images/facebook-nav.png`} width={29} height={28} alt="facebook" />
+                <Image src={`/Images/facebook-nav.png`} width={29} height={28} alt="facebook" />
             </Link>
             <Link href="#" className="hover:scale-110 transition-transform">
-               <Image src={`/Images/tiktok-nav.png`} width={29} height={28} alt="tiktok" />
+                <Image src={`/Images/tiktok-nav.png`} width={29} height={28} alt="tiktok" />
             </Link>
             <Link href="#" className="hover:scale-110 transition-transform">
               <Image src={`/Images/insta-nav.png`} width={29} height={28} alt="instagram" />
@@ -97,7 +98,7 @@ function MobileMenu({ isOpen, onClose, links, cartCount, scrolled }: MobileMenuP
 }
 
 // ── Main Navbar ──────────────────────────────────────────────────────────────
-export default function Navbar({ cartCount = 0 }: NavbarProps) {
+export default function Navbar({ cartCount: propCartCount = 0 }: NavbarProps) {
   const pathname = usePathname();
   const { logout } = useLogout();
   const isHomePage = pathname === "/";
@@ -110,22 +111,59 @@ export default function Navbar({ cartCount = 0 }: NavbarProps) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  // New state to hold the count from localStorage
+  const [localCartCount, setLocalCartCount] = useState(0);
+
   useEffect(() => {
+    // Function to read the current cart from localStorage
+    const updateCount = () => {
+      const saved = localStorage.getItem("cart");
+      if (saved) {
+        try {
+          const items = JSON.parse(saved);
+          setLocalCartCount(items.length); 
+        } catch (e) {
+          setLocalCartCount(0);
+        }
+      } else {
+        setLocalCartCount(0);
+      }
+    };
+
+    // Initial load
+    updateCount();
+
+    // Listen for the "cartUpdated" event we added to user-cart.ts
+    window.addEventListener("cartUpdated", updateCount);
+    // Listen for storage changes in other tabs
+    window.addEventListener("storage", updateCount);
+
     const token = Cookies.get("token");
     setIsLoggedIn(!!token);
 
     if (!isHomePage) {
       setScrolled(true);
-      return;
+    } else {
+      const handleScroll = () => {
+        setScrolled(window.scrollY >= window.innerHeight * SCROLL_THRESHOLD_VH);
+      };
+      window.addEventListener("scroll", handleScroll, { passive: true });
+      handleScroll();
+      return () => {
+        window.removeEventListener("scroll", handleScroll);
+        window.removeEventListener("cartUpdated", updateCount);
+        window.removeEventListener("storage", updateCount);
+      };
     }
 
-    function handleScroll() {
-      setScrolled(window.scrollY >= window.innerHeight * SCROLL_THRESHOLD_VH);
-    }
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("cartUpdated", updateCount);
+      window.removeEventListener("storage", updateCount);
+    };
   }, [isHomePage, pathname]);
+
+  // Use the local count we just calculated
+  const displayCartCount = localCartCount;
 
   const handleUserClick = () => {
     if (isLoggedIn) {
@@ -208,27 +246,22 @@ export default function Navbar({ cartCount = 0 }: NavbarProps) {
                   src={isTransparent ? `/Images/cartIcon-nav.png` : `/Images/cartIcon-nav2.png`} 
                   className="w-7 h-7" width={28} height={28} alt="cart" 
                 />
-                {cartCount > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] flex items-center justify-center px-1 rounded-full bg-red-500 text-white text-[10px] font-bold ring-1 ring-white">
-                    {cartCount > 99 ? "99+" : cartCount}
+                {displayCartCount > 0 && (
+                  <span className="absolute top-0.5 right-0.5 min-w-[22px] h-[22px] flex items-center justify-center px-1 rounded-full bg-[#CA625A] text-white text-[14px]  ">
+                    {displayCartCount > 99 ? "99+" : displayCartCount}
                   </span>
                 )}
               </Link>
 
               {/* User Dropdown Logic */}
               <div className="relative">
-                {isTransparent ? <Image 
-                  src={`/Images/user.svg`} 
-                  onClick={handleUserClick}
-                  className={cn("w-7 h-7 cursor-pointer", iconCls)} 
-                  width={28} height={28} alt="user" 
-                /> : <Image 
-                  src={`/Images/user.png`} 
-                  onClick={handleUserClick}
-                  className={cn("w-7 h-7 cursor-pointer", iconCls)} 
-                  width={28} height={28} alt="user" 
-                />}
-                
+                <UserAvatar 
+                  isTransparent={isTransparent} 
+                  onClick={handleUserClick} 
+                  className={cn("w-7 h-7 cursor-pointer", iconCls)}
+                  width={28}
+                  height={28}
+                />
                 
                 {isLoggedIn && isProfileOpen && (
                   <div className="absolute -right-40 mt-2 w-52 bg-[#77923B] border  rounded-[16px]  z-50">
@@ -246,6 +279,7 @@ export default function Navbar({ cartCount = 0 }: NavbarProps) {
                       onClick={() => {
                         logout();
                         setIsProfileOpen(false);
+                        setIsLoggedIn(false);
                       }}
                       className="w-full flex items-center  text-[14px] lg:text-[16px] gap-4 px-4 py-3 text-black rounded-[16px] hover:bg-gray-50 transition-colors font-sora "
                     >
@@ -286,24 +320,19 @@ export default function Navbar({ cartCount = 0 }: NavbarProps) {
                   src={isTransparent ? `/Images/cartIcon-nav.png` : `/Images/cartIcon-nav2.png`} 
                   className="w-5 h-5" width={20} height={20} alt="cart" 
                 />
-                {cartCount > 0 && (
+                {displayCartCount > 0 && (
                   <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] flex items-center justify-center px-1 rounded-full bg-red-500 text-white text-[10px] font-bold ring-1 ring-white">
-                    {cartCount}
+                    {displayCartCount}
                   </span>
                 )}
               </Link>
-              {isTransparent ? <Image 
-                src={`/Images/user.svg`} 
-                onClick={handleUserClick}
-                className={cn("w-5 h-5 cursor-pointer", iconCls)} 
-                width={20} height={20} alt="user" 
-              /> : <Image 
-                src={`/Images/user.png`} 
-                onClick={handleUserClick}
-                className={cn("w-5 h-5 cursor-pointer", iconCls)} 
-                width={20} height={20} alt="user" 
-              />}
-              
+              <UserAvatar 
+                isTransparent={isTransparent} 
+                onClick={handleUserClick} 
+                className={cn("w-5 h-5 cursor-pointer", iconCls)}
+                width={20}
+                height={20}
+              />
             </div>
           </div>
         </div>
@@ -315,7 +344,7 @@ export default function Navbar({ cartCount = 0 }: NavbarProps) {
         isOpen={mobileOpen}
         onClose={() => setMobileOpen(false)}
         links={NAV_LINKS}
-        cartCount={cartCount}
+        cartCount={displayCartCount}
         scrolled={scrolled}
       />
     </>
