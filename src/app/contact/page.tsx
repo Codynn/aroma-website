@@ -12,7 +12,7 @@ const ContinuousContact = () => {
   // Shared background style preserved exactly
   const bgStyle = {
     backgroundImage: `url('/Images/contact-tea.png')`,
-    backgroundSize: '618px 593px', 
+    backgroundSize: '525px 593px', 
     backgroundRepeat: 'no-repeat',
   };
 
@@ -51,7 +51,7 @@ const ContinuousContact = () => {
     <div className="max-w-7xl mx-auto px-4 py-12 space-y-24 font-sora">
       
       {/* ─── CONTACT SECTION ────────────────────────────────────────── */}
-      <section className="flex flex-col md:flex-row gap-12 items-center">
+      <section className="flex flex-col md:flex-row gap-12 items-center lg:justify-between">
         
         {/* Form Side */}
         <div className="flex-1  w-full flex flex-col">
@@ -100,20 +100,38 @@ const ContinuousContact = () => {
         </div>
 
         {/* The Dissected Image Container */}
-        <div className="order-2 md:order-2 relative w-[358px] h-[408px] md:w-[618px] md:h-[593px] grid grid-cols-3 grid-rows-2 gap-3">
-          <div 
-            className="col-span-2 rounded-[16px] border-2 border-white"
-            style={{ ...bgStyle, backgroundPosition: '0 0' }}
-          />
-          <div 
-            className="col-span-1 rounded-[16px] border-2 border-white"
-            style={{ ...bgStyle, backgroundPosition: '-336px 0' }}
-          />
-          <div 
-            className="col-span-3 rounded-l-3xl overflow-hidden border-2 border-white"
-            style={{ ...bgStyle, backgroundPosition: '0 -256px' }}
-          />
-        </div>
+       {/* The Dissected Image Container */}
+<div className="order-2 md:order-2 relative w-[358px] h-[408px] md:w-[525px] md:h-[593px] grid grid-cols-12 grid-rows-2 gap-3">
+  
+  {/* 1. TOP LEFT: Main Teapot Lid */}
+  <div 
+    className="col-span-7 rounded-[24px] border-2 border-white overflow-hidden"
+    style={{ 
+      ...bgStyle, 
+      backgroundPosition: '0 0' 
+    }}
+  />
+
+  {/* 2. TOP RIGHT: Teapot Handle Detail */}
+  <div 
+    className="col-span-5 rounded-[24px] border-2 border-white overflow-hidden"
+    style={{ 
+      ...bgStyle, 
+      // Offset = Width of Col 1 (approx 58%) + Gap
+      backgroundPosition: 'calc(-305px - 12px) 0' 
+    }}
+  />
+
+  {/* 3. BOTTOM: Pouring Action & Cup */}
+  <div 
+    className="col-span-12 rounded-[24px] rounded-br-[180px] border-2 border-white overflow-hidden"
+    style={{ 
+      ...bgStyle, 
+      // Offset = Height of Row 1 (approx 45%) + Gap
+      backgroundPosition: '0 calc(-267px - 12px)' 
+    }}
+  />
+</div>
       </section>
 
       {/* ─── LOCATION MAP SECTION ────────────────────────────────────────── */}

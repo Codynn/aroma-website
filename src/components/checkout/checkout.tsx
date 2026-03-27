@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useEffect } from "react";
-import { ChevronDown, Loader2 } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { ChevronDown, Loader2, Check, ShoppingBag, ListOrdered } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -11,6 +11,7 @@ import { useCart } from "@/hooks/user-cart";
 import { useMe } from "@/services/api/user.api";
 import { usePayment } from "@/services/api/payment.api";
 import { useCreateOrder } from "@/services/api/order.api";
+import { cn } from "@/lib/utils";
 
 const schema = z.object({
   fullName: z.string().min(1, "Full name is required"),
@@ -36,6 +37,9 @@ export default function CheckoutPage() {
   const { data: paymentData, isLoading: isPaymentLoading } = usePayment();
   const createOrder = useCreateOrder();
   const router = useRouter();
+  
+  // State for Success Popup
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const {
     register,
@@ -53,14 +57,12 @@ export default function CheckoutPage() {
     },
   });
 
-  // Filter for selected items only
   const selectedItems = cart.filter((item) => item.selected);
   const subtotal = selectedItems.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0
   );
 
-  // Auto-fill user data
   useEffect(() => {
     if (user) {
       setValue("email", user.email || "");
@@ -68,7 +70,6 @@ export default function CheckoutPage() {
     }
   }, [user, setValue]);
 
-  // Handle default payment selection
   const currentPaymentId = watch("paymentModeId");
   useEffect(() => {
     if (paymentData?.items?.length && !currentPaymentId) {
@@ -83,7 +84,7 @@ export default function CheckoutPage() {
       customerName: data.fullName,
       customerPhone: `${data.phoneCode}${data.whatsappNumber}`,
       customerEmail: data.email,
-      orderType: "delivery" as const, // Fixed literal type
+      orderType: "delivery" as const,
       quickDeliveryAddress: `${data.address}${
         data.apartment ? `, ${data.apartment}` : ""
       }, ${data.city}`,
@@ -94,7 +95,7 @@ export default function CheckoutPage() {
       paymentDistributions: [
         {
           paymentModeId: data.paymentModeId,
-          amount: Number(subtotal), // Ensure numeric type
+          amount: Number(subtotal),
           status: "pending" as const,
         },
       ],
@@ -104,13 +105,14 @@ export default function CheckoutPage() {
     createOrder.mutate(orderPayload, {
       onSuccess: () => {
         clearCart();
-        router.push("/order-confirmation");
+        // Show the success modal instead of direct navigation
+        setShowSuccessModal(true);
       },
     });
   };
 
   return (
-    <div className="bg-white min-h-screen font-sora py-10">
+    <div className="bg-white min-h-screen font-sora py-10 relative">
       <div className="max-w-7xl mx-auto px-3 lg:px-0">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start flex-col-reverse lg:flex-row">
           <div className="lg:col-span-7 order-2 lg:pr-[31px] lg:order-1 lg:border-r-1 lg:border-r-[#989898]">
@@ -136,14 +138,14 @@ export default function CheckoutPage() {
                 readOnly
                 type="text"
                 placeholder="Email"
-                className="w-full border text-[18px] text-[#7D8F7B] lg:text-[20px] font-bold border-[#989898] rounded-[16px] px-4 py-3 outline-none bg-gray-100"
+                className="w-full border text-[18px] text-[#7D8F7B] lg:text-[20px]  border-[#989898] rounded-[16px] px-4 py-3 outline-none bg-gray-100"
               />
               <div className="w-full">
                 <input
                   {...register("fullName")}
                   type="text"
                   placeholder="Full Name"
-                  className="w-full border text-[18px] text-[#7D8F7B] lg:text-[20px] font-bold border-[#989898] rounded-[16px] px-4 py-3 outline-none focus:ring-1 focus:ring-[#77923B]"
+                  className="w-full border text-[18px] text-[#7D8F7B] lg:text-[20px]  border-[#989898] rounded-[16px] px-4 py-3 outline-none focus:ring-1 focus:ring-[#77923B]"
                 />
                 {errors.fullName && (
                   <p className="text-red-500 text-xs mt-1">
@@ -155,7 +157,7 @@ export default function CheckoutPage() {
               <div className="relative">
                 <select
                   {...register("country")}
-                  className="w-full border text-[18px] lg:text-[20px] font-bold border-[#989898] rounded-[16px] px-4 py-3 appearance-none outline-none bg-white text-[#7D8F7B]"
+                  className="w-full border text-[18px] lg:text-[20px]  border-[#989898] rounded-[16px] px-4 py-3 appearance-none outline-none bg-white text-[#7D8F7B]"
                 >
                   <option value="Nepal">Nepal</option>
                 </select>
@@ -167,7 +169,7 @@ export default function CheckoutPage() {
                   <div className="relative w-1/4">
                     <select
                       {...register("phoneCode")}
-                      className="w-full border text-[18px] text-[#7D8F7B] lg:text-[20px] font-bold border-[#989898] rounded-[16px] px-4 py-3 appearance-none outline-none bg-white"
+                      className="w-full border text-[18px] text-[#7D8F7B] lg:text-[20px]  border-[#989898] rounded-[16px] px-4 py-3 appearance-none outline-none bg-white"
                     >
                       <option value="+977">+977</option>
                     </select>
@@ -177,7 +179,7 @@ export default function CheckoutPage() {
                     {...register("whatsappNumber")}
                     type="text"
                     placeholder="Whatsapp Number"
-                    className="w-3/4 border text-[18px] lg:text-[20px] text-[#7D8F7B] font-bold border-[#989898] rounded-[16px] px-4 py-3 outline-none focus:ring-1 focus:ring-[#77923B]"
+                    className="w-3/4 border text-[18px] lg:text-[20px] text-[#7D8F7B]  border-[#989898] rounded-[16px] px-4 py-3 outline-none focus:ring-1 focus:ring-[#77923B]"
                   />
                 </div>
                 {errors.whatsappNumber && (
@@ -191,22 +193,21 @@ export default function CheckoutPage() {
                 {...register("city")}
                 type="text"
                 placeholder="City"
-                className="w-full border text-[18px] lg:text-[20px] font-bold text-[#7D8F7B] border-[#989898] rounded-[16px] px-4 py-3 outline-none focus:ring-1 focus:ring-[#77923B]"
+                className="w-full border text-[18px] lg:text-[20px]  text-[#7D8F7B] border-[#989898] rounded-[16px] px-4 py-3 outline-none focus:ring-1 focus:ring-[#77923B]"
               />
               <input
                 {...register("address")}
                 type="text"
                 placeholder="Address"
-                className="w-full border text-[18px] lg:text-[20px] font-bold text-[#7D8F7B] border-[#989898] rounded-[16px] px-4 py-3 outline-none focus:ring-1 focus:ring-[#77923B]"
+                className="w-full border text-[18px] lg:text-[20px]  text-[#7D8F7B] border-[#989898] rounded-[16px] px-4 py-3 outline-none focus:ring-1 focus:ring-[#77923B]"
               />
               <input
                 {...register("apartment")}
                 type="text"
                 placeholder="Apartment, suite, etc. (optional)"
-                className="w-full border text-[18px] lg:text-[20px] font-bold text-[#7D8F7B] border-[#989898] rounded-[16px] px-4 py-3 outline-none focus:ring-1 focus:ring-[#77923B]"
+                className="w-full border text-[18px] lg:text-[20px]  text-[#7D8F7B] border-[#989898] rounded-[16px] px-4 py-3 outline-none focus:ring-1 focus:ring-[#77923B]"
               />
 
-              {/* Dynamic Payment Modes */}
               <div className="pt-4">
                 <h3 className="font-bold mb-3 text-black">Select Payment Mode</h3>
                 {isPaymentLoading ? (
@@ -322,7 +323,7 @@ export default function CheckoutPage() {
               <input
                 type="text"
                 placeholder="Discount Code or Gift Code"
-                className="flex-1 border text-[18px] lg:text-[20px] font-bold border-[#989898] rounded-[16px] text-[#7D8F7B] px-4 py-3 outline-none"
+                className="flex-1 border text-[18px] lg:text-[20px]  border-[#989898] rounded-[16px] text-[#7D8F7B] px-4 py-3 outline-none"
               />
               <button className="bg-[#77923B] text-white px-4 lg:px-8 py-3 rounded-xl font-bold hover:bg-[#6a8335]">
                 Apply
@@ -354,6 +355,42 @@ export default function CheckoutPage() {
           </div>
         </div>
       </div>
+
+      {/* SUCCESS MODAL POPUP */}
+      {showSuccessModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
+          <div className="bg-white rounded-[32px] w-full max-w-md p-8 shadow-2xl animate-in zoom-in-95 duration-300">
+            <div className="flex flex-col items-center text-center">
+              <div className="bg-[#77923B] p-4 rounded-full mb-6">
+                <Check className="w-16 h-16 text-white" />
+              </div>
+              
+              <h2 className="text-3xl font-extrabold text-black mb-3">Order Placed!</h2>
+              <p className="text-[#7D8F7B] text-[16px] font-medium leading-relaxed mb-8">
+                Your order inquiry has been successfully submitted. We will contact you shortly to confirm the details.
+              </p>
+
+              <div className="flex flex-col w-full gap-4">
+                <button
+                  onClick={() => router.push("/orderHistory")}
+                  className="flex items-center cursor-pointer justify-center gap-2 w-full bg-[#77923B] text-white font-bold py-4 rounded-2xl hover:bg-[#6a8335] transition-all shadow-lg shadow-[#77923B]/20"
+                >
+                  <ListOrdered className="w-5 h-5" />
+                  View Details
+                </button>
+                
+                <button
+                  onClick={() => router.push("/product")}
+                  className="flex items-center cursor-pointer justify-center gap-2 w-full border-2 border-[#77923B] text-[#77923B] font-bold py-4 rounded-2xl hover:bg-[#f0f4e8] transition-all"
+                >
+                  <ShoppingBag className="w-5 h-5" />
+                  Continue Shopping
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

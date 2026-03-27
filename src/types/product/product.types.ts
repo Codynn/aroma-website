@@ -2,6 +2,7 @@
 
 export interface Product {
   id: string;
+  slug: string;
   name: string;
   description: string;
   sellingPrice: number;
@@ -22,6 +23,7 @@ export interface Product {
   isVariant: boolean;
   addons: any[];
   variants: any[];
+  additonalFields: string | null;
 }
 
 export interface ProductResponse {

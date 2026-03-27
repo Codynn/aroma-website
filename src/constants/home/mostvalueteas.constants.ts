@@ -37,4 +37,4 @@ export const MOST_VALUED_TEAS: TeaProduct[] = [
 
 export const MVT_SECTION_HEADING = 'Our Most Valued Teas'
 export const MVT_VIEW_ALL_LABEL  = 'View All Teas'
-export const MVT_VIEW_ALL_HREF   = '/shop'
+export const MVT_VIEW_ALL_HREF   = '/product'

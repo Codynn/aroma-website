@@ -267,7 +267,7 @@ export default function Navbar({ cartCount: propCartCount = 0 }: NavbarProps) {
                   <div className="absolute -right-40 mt-2 w-52 bg-[#77923B] border  rounded-[16px]  z-50">
                     <div className="bg-white mt-2 rounded-[16px]">
                       <Link 
-                      href="/order-history"
+                      href="/orderHistory"
                       onClick={() => setIsProfileOpen(false)}
                       className="flex items-center center gap-4 px-4 py-3 text-black text-[14px] lg:text-[16px] rounded-[16px] hover:bg-gray-50 transition-colors font-sora "
                     >

@@ -7,7 +7,7 @@ import { Star, RefreshCcw, Loader2 } from "lucide-react";
 import { useGetProducts } from "@/services/api/product.api"; //
 import HandledImage from "@/components/shared/HandleImage"; //
 
-const ITEMS_PER_PAGE = 25;
+const ITEMS_PER_PAGE = 20;
 
 export default function ProductPage() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -67,7 +67,7 @@ export default function ProductPage() {
             {products.map((product) => (
               /* Wrap the card in a Link component */
               <Link 
-                href={`/product/${product.id}`} 
+                href={`/product/${product.slug}`} 
                 key={product.id} 
                 className="flex flex-col mx-auto group cursor-pointer"
               >
