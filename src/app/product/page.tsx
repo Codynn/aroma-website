@@ -170,7 +170,7 @@ export default function ProductPage() {
             style={{ width: "140px", height: "157px" }}
           >
             <Image
-              src="/images/cube.png"
+              src="/Images/cube.png"
               alt="No data found"
               width={140}
               height={157}
