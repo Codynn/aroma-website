@@ -376,7 +376,7 @@ export default function Navbar({ cartCount: propCartCount = 0 }: NavbarProps) {
                   src={
                     isTransparent
                       ? `/Images/cartIcon-nav.png`
-                      : `/Images/cartIcon-nav2.png`
+                      : `/Images/CartIcon-nav2.png`
                   }
                   className="w-5 h-5"
                   width={20}
