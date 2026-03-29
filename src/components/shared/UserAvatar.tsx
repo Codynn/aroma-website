@@ -14,59 +14,80 @@ interface UserAvatarProps {
   height?: number;
 }
 
-const UserAvatar: React.FC<UserAvatarProps> = ({ 
-  isTransparent, 
-  onClick, 
-  className, 
-  width = 28, 
-  height = 28 
+const UserAvatar: React.FC<UserAvatarProps> = ({
+  isTransparent,
+  onClick,
+  className,
+  width = 28,
+  height = 28,
 }) => {
   const [mounted, setMounted] = useState(false);
   const token = Cookies.get("token");
 
-  // We only run the query if we are on the client and have a token
-  const { data: user, isLoading } = useMe(); // Ensure your hook handles 'enabled' internally or wrap it
+  const { data: user, isLoading } = useMe();
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Show default icon during SSR and until mounted to prevent hydration errors
+  const [imageUrl, setImageUrl] = useState(user?.photo);
+
+  useEffect(() => {
+    if (user?.photo) setImageUrl(user?.photo);
+  }, [user?.photo]);
+
   if (!mounted || !token) {
     return (
       <Image
         src={isTransparent ? `/Images/user.svg` : `/Images/user.png`}
+        onError={(error: any) => {
+          setImageUrl(null);
+        }}
         onClick={onClick}
         className={className}
         width={width}
         height={height}
-        alt="user"
+        alt=""
       />
     );
   }
 
   if (isLoading) {
     return (
-      <div 
-        className={cn("rounded-full bg-gray-200 animate-pulse", className)} 
-        style={{ width, height }} 
+      <div
+        className={cn("rounded-full bg-gray-200 animate-pulse", className)}
+        style={{ width, height }}
       />
     );
   }
 
   const initial = user?.email?.charAt(0).toUpperCase() || "?";
+  if (imageUrl) {
+    return (
+      <Image
+        src={
+          imageUrl || (isTransparent ? `/Images/user.svg` : `/Images/user.png`)
+        }
+        onError={(error: any) => {
+          setImageUrl(null);
+        }}
+        onClick={onClick}
+        className={cn("rounded-full", className)}
+        width={width}
+        height={height}
+        alt=""
+      />
+    );
+  }
 
   return (
     <div
       onClick={onClick}
       className={cn(
         "rounded-full flex items-center justify-center cursor-pointer font-bold transition-all  font-sora",
-        isTransparent
-          ? "bg-white text-black "
-          : "bg-[#77923B] text-white ",
-        className
+        isTransparent ? "bg-white text-black " : "bg-[#77923B] text-white ",
+        className,
       )}
-     
     >
       <span style={{ fontSize: width > 20 ? "14px" : "11px" }}>{initial}</span>
     </div>

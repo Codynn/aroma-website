@@ -8,7 +8,7 @@ import { Search, Menu, X, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Cookies from "js-cookie";
 import LoginPopup from "@/components/auth/Login";
-import { useLogout } from "@/hooks/use-auth"; 
+import { useLogout } from "@/hooks/use-auth";
 import UserAvatar from "./UserAvatar"; // Import the component
 import { MobileMenuProps, NavbarProps } from "@/types/layout/navbar.types";
 import {
@@ -18,7 +18,13 @@ import {
 } from "@/constants/layout/navbar.constants";
 
 // ── Mobile Drawer ──────────────────────────────────────────────────────────────
-function MobileMenu({ isOpen, onClose, links, cartCount, scrolled }: MobileMenuProps) {
+function MobileMenu({
+  isOpen,
+  onClose,
+  links,
+  cartCount,
+  scrolled,
+}: MobileMenuProps) {
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "";
     return () => {
@@ -51,7 +57,7 @@ function MobileMenu({ isOpen, onClose, links, cartCount, scrolled }: MobileMenuP
           >
             <X className="w-8 h-8 text-white" strokeWidth={1.5} />
           </button>
-          
+
           <div className="relative w-[45px] h-[46px]">
             <Image
               src={NAVBAR_LOGO.src}
@@ -82,13 +88,28 @@ function MobileMenu({ isOpen, onClose, links, cartCount, scrolled }: MobileMenuP
           </span>
           <div className="flex items-center gap-4">
             <Link href="#" className="hover:scale-110 transition-transform">
-                <Image src={`/Images/facebook-nav.png`} width={29} height={28} alt="facebook" />
+              <Image
+                src={`/Images/facebook-nav.png`}
+                width={29}
+                height={28}
+                alt="facebook"
+              />
             </Link>
             <Link href="#" className="hover:scale-110 transition-transform">
-                <Image src={`/Images/tiktok-nav.png`} width={29} height={28} alt="tiktok" />
+              <Image
+                src={`/Images/tiktok-nav.png`}
+                width={29}
+                height={28}
+                alt="tiktok"
+              />
             </Link>
             <Link href="#" className="hover:scale-110 transition-transform">
-              <Image src={`/Images/insta-nav.png`} width={29} height={28} alt="instagram" />
+              <Image
+                src={`/Images/insta-nav.png`}
+                width={29}
+                height={28}
+                alt="instagram"
+              />
             </Link>
           </div>
         </div>
@@ -106,7 +127,7 @@ export default function Navbar({ cartCount: propCartCount = 0 }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  
+
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -121,7 +142,7 @@ export default function Navbar({ cartCount: propCartCount = 0 }: NavbarProps) {
       if (saved) {
         try {
           const items = JSON.parse(saved);
-          setLocalCartCount(items.length); 
+          setLocalCartCount(items.length);
         } catch (e) {
           setLocalCartCount(0);
         }
@@ -190,7 +211,10 @@ export default function Navbar({ cartCount: propCartCount = 0 }: NavbarProps) {
       >
         <div className="max-w-7xl mx-auto  ">
           <div className="hidden lg:flex items-center justify-between ">
-            <Link href="/" className="shrink-0 hover:opacity-80 transition-opacity">
+            <Link
+              href="/"
+              className="shrink-0 hover:opacity-80 transition-opacity"
+            >
               <Image
                 src={logoSrc}
                 alt={NAVBAR_LOGO.alt}
@@ -211,7 +235,9 @@ export default function Navbar({ cartCount: propCartCount = 0 }: NavbarProps) {
                   href={link.href}
                   className={cn(
                     "font-sora font-bold text-[20px] transition-colors duration-200",
-                    isTransparent ? "text-white/90 hover:text-white" : "text-gray-800 hover:text-black",
+                    isTransparent
+                      ? "text-white/90 hover:text-white"
+                      : "text-gray-800 hover:text-black",
                   )}
                 >
                   {link.label}
@@ -221,10 +247,12 @@ export default function Navbar({ cartCount: propCartCount = 0 }: NavbarProps) {
 
             <div className="flex items-center gap-9">
               <div className="relative flex items-center">
-                <div className={cn(
-                  "absolute right-9 overflow-hidden transition-all duration-300",
-                  searchOpen ? "w-52 opacity-100" : "w-0 opacity-0",
-                )}>
+                <div
+                  className={cn(
+                    "absolute right-9 overflow-hidden transition-all duration-300",
+                    searchOpen ? "w-52 opacity-100" : "w-0 opacity-0",
+                  )}
+                >
                   <input
                     type="search"
                     placeholder="Search teas…"
@@ -236,15 +264,28 @@ export default function Navbar({ cartCount: propCartCount = 0 }: NavbarProps) {
                     )}
                   />
                 </div>
-                <button onClick={() => setSearchOpen((p) => !p)} className="p-2">
-                  <Search className={cn("w-7 h-7", iconCls)} strokeWidth={1.75} />
+                <button
+                  onClick={() => setSearchOpen((p) => !p)}
+                  className="p-2"
+                >
+                  <Search
+                    className={cn("w-7 h-7", iconCls)}
+                    strokeWidth={1.75}
+                  />
                 </button>
               </div>
 
               <Link href="/cart" className="relative p-2">
-                <Image 
-                  src={isTransparent ? `/Images/cartIcon-nav.png` : `/Images/cartIcon-nav2.png`} 
-                  className="w-7 h-7" width={28} height={28} alt="cart" 
+                <Image
+                  src={
+                    isTransparent
+                      ? `/Images/cartIcon-nav.png`
+                      : `/Images/CartIcon-nav2.png`
+                  }
+                  className="w-7 h-7"
+                  width={28}
+                  height={28}
+                  alt="cart"
                 />
                 {displayCartCount > 0 && (
                   <span className="absolute top-0.5 right-0.5 min-w-[22px] h-[22px] flex items-center justify-center px-1 rounded-full bg-[#CA625A] text-white text-[14px]  ">
@@ -255,40 +296,49 @@ export default function Navbar({ cartCount: propCartCount = 0 }: NavbarProps) {
 
               {/* User Dropdown Logic */}
               <div className="relative">
-                <UserAvatar 
-                  isTransparent={isTransparent} 
-                  onClick={handleUserClick} 
+                <UserAvatar
+                  isTransparent={isTransparent}
+                  onClick={handleUserClick}
                   className={cn("w-7 h-7 cursor-pointer", iconCls)}
                   width={28}
                   height={28}
                 />
-                
+
                 {isLoggedIn && isProfileOpen && (
                   <div className="absolute -right-40 mt-2 w-52 bg-[#77923B] border  rounded-[16px]  z-50">
                     <div className="bg-white mt-2 rounded-[16px]">
-                      <Link 
-                      href="/orderHistory"
-                      onClick={() => setIsProfileOpen(false)}
-                      className="flex items-center center gap-4 px-4 py-3 text-black text-[14px] lg:text-[16px] rounded-[16px] hover:bg-gray-50 transition-colors font-sora "
-                    >
-                      <Image src={'/Images/arrow-right.svg'} alt="arrow" width={16} height={16} className="w-4 h-4 " />
-                      My Order
-                      
-                    </Link>
-                    <button 
-                      onClick={() => {
-                        logout();
-                        setIsProfileOpen(false);
-                        setIsLoggedIn(false);
-                      }}
-                      className="w-full flex items-center  text-[14px] lg:text-[16px] gap-4 px-4 py-3 text-black rounded-[16px] hover:bg-gray-50 transition-colors font-sora "
-                    >
-                       <Image src={'/Images/arrow-right.svg'} alt="arrow" width={16} height={16} className="w-4 h-4 " />
-                      Logout
-                     
-                    </button>
+                      <Link
+                        href="/orderHistory"
+                        onClick={() => setIsProfileOpen(false)}
+                        className="flex items-center center gap-4 px-4 py-3 text-black text-[14px] lg:text-[16px] rounded-[16px] hover:bg-gray-50 transition-colors font-sora "
+                      >
+                        <Image
+                          src={"/Images/arrow-right.svg"}
+                          alt="arrow"
+                          width={16}
+                          height={16}
+                          className="w-4 h-4 "
+                        />
+                        My Order
+                      </Link>
+                      <button
+                        onClick={() => {
+                          logout();
+                          setIsProfileOpen(false);
+                          setIsLoggedIn(false);
+                        }}
+                        className="w-full flex items-center  text-[14px] lg:text-[16px] gap-4 px-4 py-3 text-black rounded-[16px] hover:bg-gray-50 transition-colors font-sora "
+                      >
+                        <Image
+                          src={"/Images/arrow-right.svg"}
+                          alt="arrow"
+                          width={16}
+                          height={16}
+                          className="w-4 h-4 "
+                        />
+                        Logout
+                      </button>
                     </div>
-                    
                   </div>
                 )}
               </div>
@@ -299,7 +349,10 @@ export default function Navbar({ cartCount: propCartCount = 0 }: NavbarProps) {
           <div className="flex lg:hidden items-center justify-between px-6">
             <div className="flex items-center gap-6">
               <button onClick={() => setMobileOpen(true)} className={iconBtn}>
-                <Menu className={cn("w-[19px] h-[14px]", iconCls)} strokeWidth={1.75} />
+                <Menu
+                  className={cn("w-[19px] h-[14px]", iconCls)}
+                  strokeWidth={1.75}
+                />
               </button>
               <Link href="/">
                 <Image
@@ -312,13 +365,23 @@ export default function Navbar({ cartCount: propCartCount = 0 }: NavbarProps) {
               </Link>
             </div>
             <div className="flex items-center gap-6">
-              <button onClick={() => setSearchOpen((p) => !p)} className={iconBtn}>
+              <button
+                onClick={() => setSearchOpen((p) => !p)}
+                className={iconBtn}
+              >
                 <Search className={cn("w-5 h-5", iconCls)} strokeWidth={1.75} />
               </button>
               <Link href="/cart" className="relative">
-                <Image 
-                  src={isTransparent ? `/Images/cartIcon-nav.png` : `/Images/cartIcon-nav2.png`} 
-                  className="w-5 h-5" width={20} height={20} alt="cart" 
+                <Image
+                  src={
+                    isTransparent
+                      ? `/Images/cartIcon-nav.png`
+                      : `/Images/CartIcon-nav2.png`
+                  }
+                  className="w-5 h-5"
+                  width={20}
+                  height={20}
+                  alt="cart"
                 />
                 {displayCartCount > 0 && (
                   <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] flex items-center justify-center px-1 rounded-full bg-red-500 text-white text-[10px] font-bold ring-1 ring-white">
@@ -326,9 +389,9 @@ export default function Navbar({ cartCount: propCartCount = 0 }: NavbarProps) {
                   </span>
                 )}
               </Link>
-              <UserAvatar 
-                isTransparent={isTransparent} 
-                onClick={handleUserClick} 
+              <UserAvatar
+                isTransparent={isTransparent}
+                onClick={handleUserClick}
                 className={cn("w-5 h-5 cursor-pointer", iconCls)}
                 width={20}
                 height={20}

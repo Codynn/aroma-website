@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+
 import Link from "next/link";
 import { Star, Loader2, ChevronDown, X } from "lucide-react";
 
@@ -32,10 +33,12 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
 
+
 const ITEMS_PER_PAGE = 20;
 
 export default function ProductPage() {
   const [currentPage, setCurrentPage] = useState(1);
+
   
   // 1. Applied Filters State (What actually triggers the API)
   const [appliedFilters, setAppliedFilters] = useState({
@@ -60,6 +63,9 @@ export default function ProductPage() {
     sortBy: appliedFilters.sortBy,
     sortOrder: appliedFilters.sortOrder
   });
+
+
+ 
 
   const products = data?.data || [];
   const totalPages = data?.totalPages || 1;
@@ -94,21 +100,24 @@ export default function ProductPage() {
   };
 
   return (
-    <div className="max-w-7xl flex flex-col items-center justify-center mx-auto px-4 min-h-screen pb-20">
-      
-      {/* Heading */}
-      <div className="flex flex-col justify-center items-center mb-[24px] md:mb-[64px] select-none text-center">
-        <h1 className="mt-[90px] font-bold md:text-[100px] text-[38px] text-[#9BA87D] leading-0">
+
+    <div className="max-w-7xl flex flex-col items-center justify-center mx-auto px-4 min-h-screen">
+      {/* ── 1. Mirrored Heading ── */}
+      <div className="flex flex-col justify-center items-center mb-[24px] md:mb-[64px]">
+        <h1 className="mt-[90px] font-bold md:text-[100px] text-[38px] text-[#9BA87D] leading-0 ">
           Discover Our Teas
         </h1>
-        <h1 className="font-bold md:text-[100px] text-[38px] scale-y-[-1] bg-gradient-to-t from-[#9BA87D]/20 to-transparent 
-                   bg-clip-text text-transparent  -mt-2">
-          Discover Our Teas
+        <h1
+          className="font-bold md:text-[100px] text-[38px] scale-y-[-1] bg-gradient-to-t from-[#9BA87D]/12 to-transparent 
+                   bg-clip-text text-transparent select-none  -mt-1"
+        >
+
         </h1>
       </div>
 
       {/* Toolbar */}
       <div className="w-full flex justify-between items-center mb-12">
+
         
         {/* Desktop Filter */}
         <div className="hidden md:block">
@@ -182,6 +191,7 @@ export default function ProductPage() {
                         </div>
                       </div>
                     </div>
+
                   </div>
                 </div>
 
@@ -306,6 +316,7 @@ export default function ProductPage() {
             ))}
           </div>
 
+
           {/* Pagination */}
           <div className="flex items-center gap-4 md:gap-8">
             <button 
@@ -331,11 +342,13 @@ export default function ProductPage() {
               disabled={currentPage === totalPages} 
               onClick={() => { setCurrentPage(p => p + 1); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
               className="font-sora font-bold text-[#77923B] disabled:opacity-20 cursor-pointer"
+
             >
               Next
             </button>
           </div>
         </>
+
       )}
     </div>
   );
