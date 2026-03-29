@@ -124,13 +124,15 @@ const ContinuousContact = () => {
 
   {/* 3. BOTTOM: Pouring Action & Cup */}
   <div 
-    className="col-span-12 rounded-[24px] rounded-br-[180px] border-2 border-white overflow-hidden"
-    style={{ 
-      ...bgStyle, 
-      // Offset = Height of Row 1 (approx 45%) + Gap
-      backgroundPosition: '0 calc(-267px - 12px)' 
-    }}
-  />
+  className="col-span-12 rounded-[24px] border-2 border-white overflow-hidden"
+  style={{ 
+    ...bgStyle, 
+    // Shift up by the height of the top row + gap
+    backgroundPosition: '0 calc(-267px - 12px)',
+    // This creates the large "cutout" curve on the bottom right
+    borderBottomRightRadius: '240px', 
+  }}
+/>
 </div>
       </section>
 

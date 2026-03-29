@@ -65,7 +65,7 @@ function TeaCard({ product }: { product: any }) {
 // ── Main Section ──────────────────────────────────────────────────────────────
 export default function MostValuedTeas() {
   // Fetch only 4 products for this section
-  const { data, isLoading } = useGetProducts(1, 4);
+  const { data, isLoading } = useGetProducts({ page: 1, limit: 4 });
   const products = data?.data || [];
 
   if (isLoading) {

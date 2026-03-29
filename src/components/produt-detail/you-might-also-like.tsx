@@ -47,7 +47,7 @@ function RelatedTeaCard({ product }: { product: any }) {
 // ── Main Section ─────────────────────────────────────────────────────────────
 export default function RelatedProducts() {
   // Fetch 4 products (mimicking 'Most Valued' logic)
-  const { data, isLoading } = useGetProducts(1, 4);
+  const { data, isLoading } = useGetProducts({ page: 1, limit: 4 });
   const products = data?.data || [];
 
   if (isLoading) {
