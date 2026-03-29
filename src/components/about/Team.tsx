@@ -1,20 +1,19 @@
-'use client';
+"use client";
 
-import React from 'react';
-import Image from 'next/image';
+import React from "react";
+import Image from "next/image";
 
 const teamMembers = [
-  { name: "Rekha Nepal", role: "Founder", src: "/Images/p-1.png" },
-  { name: "Jiwan Kumar Nepal", role: "CEO", src: "/Images/p-2.png" },
-  { name: "Nikita Nepal", role: "MD", src: "/Images/p-3.png" },
-  { name: "Rajesh Rauniyar", role: "Manager", src: "/Images/p-4.png" },
+  { name: "Rekha Nepal", role: "Founder", src: "/people/4.jpeg" },
+  { name: "Rajesh Gupta", role: "Co-Founder/Manager", src: "/people/3.jpeg" },
+  { name: "Nikita Nepal", role: "MD", src: "/people/1.jpeg" },
+  { name: "Jiwan Kumar Nepal", role: "CEO/MD", src: "/people/2.jpeg" },
 ];
 
 export default function TeamSection() {
   return (
     <section className="py-16 md:py-24  bg-white overflow-hidden">
       <div className="max-w-7xl md:mx-auto ml-4  ">
-        
         {/* Section Heading */}
         <h2 className="text-[#77923B] text-2xl md:text-[42px] font-bold mb-12 md:mb-16 max-w-2xl leading-tight">
           "Quality is not added later. <br className="hidden md:block" />
@@ -26,14 +25,16 @@ export default function TeamSection() {
           {teamMembers.map((member, index) => (
             <div key={index} className="flex flex-col">
               <div className="relative w-[300px] h-[352px] rounded-[16px] overflow-hidden mb-4 shadow-sm">
-                <Image 
-                  src={member.src} 
-                  alt={member.name} 
-                  fill 
+                <Image
+                  src={member.src}
+                  alt={member.name}
+                  fill
                   className="object-cover"
                 />
               </div>
-              <h3 className="text-[24px] font-bold text-black">{member.name}</h3>
+              <h3 className="text-[24px] font-bold text-black">
+                {member.name}
+              </h3>
               <p className="text-[18px] text-[#222222]">{member.role}</p>
             </div>
           ))}
@@ -46,10 +47,10 @@ export default function TeamSection() {
             {teamMembers.map((member, index) => (
               <div key={index} className="flex-none snap-start first:pl-0">
                 <div className="relative w-[300px] h-[352px] rounded-3xl overflow-hidden mb-3 ">
-                  <Image 
-                    src={member.src} 
-                    alt={member.name} 
-                    fill 
+                  <Image
+                    src={member.src}
+                    alt={member.name}
+                    fill
                     className="object-cover"
                   />
                 </div>
@@ -59,7 +60,6 @@ export default function TeamSection() {
             ))}
           </div>
         </div>
-
       </div>
     </section>
   );
