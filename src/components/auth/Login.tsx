@@ -45,7 +45,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose }) => {
         <div className="flex flex-col items-center text-center">
           <h2 className="text-3xl font-semibold text-gray-800 mb-6 font-sora">Welcome to</h2>
           <div className="relative w-[220px] h-[194px] mb-8">
-            <Image src="/Images/blacklogo.svg" alt="Logo" fill className="object-contain" />
+            <Image src="/Images/logo.png" alt="Logo" fill className="object-contain" />
           </div>
           <button 
             onClick={handleGoogleLogin}
