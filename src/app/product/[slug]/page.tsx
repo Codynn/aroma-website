@@ -9,17 +9,15 @@ import RelatedProducts from "@/components/produt-detail/you-might-also-like";
 import { useGetProductById } from "@/services/api/product.api";
 import { Loader2 } from "lucide-react";
 
-// Define the type for the page props
 interface PageProps {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }
 
 export default function Page({ params }: PageProps) {
-  // Unwrap the params promise to get the id
-  const { id } = use(params);
+  const { slug } = use(params);
 
-  // Fetch the product data here so we can pass it to children
-  const { data: product, isLoading, isError } = useGetProductById(id);
+  // Fetch using the slug from the URL
+  const { data: product, isLoading, isError } = useGetProductById(slug);
 
   if (isLoading) {
     return (
@@ -32,17 +30,18 @@ export default function Page({ params }: PageProps) {
   if (isError || !product) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <p className="text-red-500 font-bold font-sora">Product not found.</p>
+        <p className="text-red-500 font-bold">Product not found.</p>
       </div>
     );
   }
 
   return (
     <div className="flex flex-col gap-6">
-      {/* Pass the id to ProductDetail */}
-      <ProductDetail id={id} />
+      {/* FIX: Passing 'product' instead of 'id'. 
+          This resolves the TS error and ensures the UUID (product.id) is used for the cart.
+      */}
+      <ProductDetail product={product} />
       
-      {/* FIX: Pass the fetched product data to the Description component */}
       <Description product={product} />
       
       <HowToBrew />

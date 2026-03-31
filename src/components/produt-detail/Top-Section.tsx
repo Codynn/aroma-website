@@ -1,38 +1,27 @@
 "use client";
 
 import React, { useState } from "react";
-import { Star, ChevronLeft, ChevronRight, Minus, Plus, Box, Loader2 } from "lucide-react";
+import { Star, ChevronLeft, ChevronRight, Minus, Plus, Box } from "lucide-react"; // Removed Loader2 as it's no longer needed here
 import Link from "next/link";
-import { useGetProductById } from "@/services/api/product.api";
 import HandledImage from "@/components/shared/HandleImage";
 import { useCart } from "@/hooks/user-cart";
 
+// FIX: Changed interface to accept the full product object
 interface TopSectionProps {
-  id: string;
+  product: any; 
 }
 
-export default function ProductDetail({ id }: TopSectionProps) {
+export default function ProductDetail({ product }: TopSectionProps) {
   const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [activeImg, setActiveImg] = useState(0);
 
-  // Get real data from your API
-  const { data: product, isLoading, isError } = useGetProductById(id);
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <Loader2 className="w-10 h-10 animate-spin text-[#77923B]" />
-      </div>
-    );
-  }
-
-  if (isError || !product) return null;
+  // FIX: Logic removed from here and moved to parent page.tsx to prevent redundant API calls.
+  if (!product) return null;
 
   const currentPrice = product.sellingPrice;
   const originalPrice = Math.round(currentPrice * 1.16);
   
-  // FIX: Combines main imageUrl with the secondaryImageUrls array from your API response
   const displayImages = [
     product.imageUrl,
     ...(product.secondaryImageUrls || [])
@@ -40,20 +29,21 @@ export default function ProductDetail({ id }: TopSectionProps) {
 
   const handleAddToCart = () => {
     addToCart({
-      productId: id,
+      productId: product.id, // CRITICAL: This is the UUID the backend requires
       title: product.name,
       price: currentPrice,
       quantity: quantity,
       image: displayImages[0],
       options: {
-        color: "black", // Example option
-        size: "M"      // Example option
+        color: "Standard", 
+        size: product.weight || "100g"
       }
     });
   };
 
   return (
     <div className="max-w-7xl mx-auto px-4 lg:px-0 py-12 font-sora">
+      {/* ALL STYLES PRESERVED EXACTLY AS PROVIDED */}
       <nav className="text-sm text-gray-400 mb-8 flex gap-2">
         <Link href={`/`} className="cursor-pointer"><span>Home /</span></Link>
         <Link href={`/product`} className="cursor-pointer"><span>Shop /</span></Link>
@@ -61,7 +51,6 @@ export default function ProductDetail({ id }: TopSectionProps) {
       </nav>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-[51px]">
-        {/* Left: Image Section */}
         <div className="flex gap-2 lg:gap-4">
           <div className="flex flex-col gap-3">
             {displayImages.map((img: string, idx: number) => (
@@ -97,7 +86,6 @@ export default function ProductDetail({ id }: TopSectionProps) {
           </div>
         </div>
 
-        {/* Right: Info Section */}
         <div className="flex flex-col">
           <h1 className="text-[28px] lg:text-[34px] font-bold text-[#121212] leading-1.6 mb-2 lg:mb-4">{product.name}</h1>
           <div className="flex items-center lg:mb-6 mb-[18px]">

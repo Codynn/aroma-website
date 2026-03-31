@@ -2,6 +2,7 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axiosInstance from "@/lib/axios";
+import { toast } from "sonner";
 
 const SHOP_ID = "a1d59900-0805-4c26-9757-7014432ab588";
 const my_Order_URL = process.env.NEXT_PUBLIC_BASE_URL;
@@ -12,6 +13,14 @@ export interface ProductRequest {
   shopProductId: string;
   quantity: number;
 }
+
+export interface ReviewPayload {
+  orderId: string;
+  shopProductId: string;
+  rating: number;
+  review: string;
+}
+
 
 export interface PaymentDistribution {
   paymentModeId: string;
@@ -28,6 +37,7 @@ export interface OrderBody {
   productRequests: ProductRequest[];
   paymentDistributions: PaymentDistribution[];
   totalAmount: number;
+ 
 }
 
 export interface OrderItem {
@@ -86,5 +96,26 @@ export const useGetMyOrders = (page: number = 1, limit: number = 5) => {
       return data;
     },
     staleTime: 2 * 60 * 1000,
+  });
+};
+
+
+export const useCreateReview = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (payload: ReviewPayload) => {
+      const response = await axiosInstance.post(`${my_Order_URL}/shop-product-review`, payload);
+      return response.data;
+    },
+    onSuccess: () => {
+      toast.success("Review submitted successfully!");
+      // Refetch orders to update the "hasReviewed" status if applicable
+      queryClient.invalidateQueries({ queryKey: ["my-orders"] });
+    },
+    onError: (error: any) => {
+      const message = error.response?.data?.message || "Failed to submit review";
+      toast.error(message);
+    },
   });
 };

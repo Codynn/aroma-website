@@ -9,8 +9,8 @@ export const NAV_LINKS: NavLink[] = [
 ]
 
 export const NAVBAR_LOGO = {
-  src:     '/home/logo.svg',      // white logo — transparent navbar
-  srcDark: '/Images/blacklogo.svg', // dark logo  — white navbar (scrolled)
+  src:     '/Images/logo.png',      // white logo — transparent navbar
+  srcDark: '/Images/logo.png', // dark logo  — white navbar (scrolled)
   alt:     'Aroma Speciality Tea',
   width:   99,
   height:  60,

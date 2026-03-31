@@ -5,7 +5,7 @@ export const HERO_CONTENT: HeroContent = {
   headingLine1: 'From the Peaks of Nepal',
   headingLine2: 'to your cup.',
   ctaLabel:     'Explore Our Teas',
-  ctaHref:      '/shop',
+  ctaHref:      '/product',
 }
 
 export const HERO_IMAGE = {

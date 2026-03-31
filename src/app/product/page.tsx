@@ -124,7 +124,7 @@ export default function ProductPage() {
           <Dialog>
             <DialogTrigger asChild>
               <button className="flex items-center gap-2 px-6 py-2.5 border border-[#7D8F7B] rounded-[16px] hover:bg-gray-50 transition-all cursor-pointer">
-                <Image src="/Images/MenuIcon.png" alt="Filter" width={19} height={16} />
+                <Image src="/Images/MenuIcon.svg" alt="Filter" width={19} height={16} />
                 <span className="font-sora text-[18px]">Open Filter</span>
               </button>
             </DialogTrigger>
@@ -296,29 +296,41 @@ export default function ProductPage() {
         <div className="flex flex-col items-center justify-center py-32">
           <Loader2 className="w-12 h-12 animate-spin text-[#77923B]" />
         </div>
-      ) : (
+      ) : products.length > 0 ? ( // FIX: Removed the extra '{' here
         <>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-4 md:gap-y-8 w-full mb-12 lg:mb-16">
             {products.map((product: any) => (
-              <Link href={`/product/${product.slug}`} key={product.id} className="flex flex-col mx-auto group cursor-pointer w-full">
+              <Link 
+                href={`/product/${product.slug}`} 
+                key={product.id} 
+                className="flex flex-col mx-auto group cursor-pointer w-full"
+              >
                 <div className="relative overflow-hidden rounded-[24px] bg-gray-50 aspect-[3/4] w-full mb-4 shadow-sm">
-                  <HandledImage src={product.imageUrl} alt={product.name} fill className="object-cover transition-transform duration-700 group-hover:scale-110" />
+                  <HandledImage 
+                    src={product.imageUrl} 
+                    alt={product.name} 
+                    fill 
+                    className="object-cover transition-transform duration-700 group-hover:scale-110" 
+                  />
                 </div>
                 <div className="flex justify-between items-start px-1">
-                  <h3 className="font-sora font-semibold text-[14px] md:text-[20px] line-clamp-1 group-hover:text-[#77923B] transition-colors">{product.name}</h3>
+                  <h3 className="font-sora font-semibold text-[14px] md:text-[20px] line-clamp-1 group-hover:text-[#77923B] transition-colors">
+                    {product.name}
+                  </h3>
                   <div className="flex items-center gap-1">
                     <Star className="w-3.5 h-3.5 fill-[#F2C94C] text-[#F2C94C]" />
                     <span className="font-sora font-medium text-[12px] md:text-[14px]">5.0</span>
                   </div>
                 </div>
-                <p className="font-sora font-bold text-[18px] md:text-[24px] text-[#77923B] px-1">Rs. {product.sellingPrice}</p>
+                <p className="font-sora font-bold text-[18px] md:text-[24px] text-[#77923B] px-1">
+                  Rs. {product.sellingPrice}
+                </p>
               </Link>
             ))}
           </div>
 
-
           {/* Pagination */}
-          <div className="flex items-center gap-4 md:gap-8">
+          <div className="flex items-center gap-4 md:gap-8 mb-20">
             <button 
               disabled={currentPage === 1} 
               onClick={() => { setCurrentPage(p => p - 1); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
@@ -342,13 +354,39 @@ export default function ProductPage() {
               disabled={currentPage === totalPages} 
               onClick={() => { setCurrentPage(p => p + 1); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
               className="font-sora font-bold text-[#77923B] disabled:opacity-20 cursor-pointer"
-
             >
               Next
             </button>
           </div>
         </>
+      ) : ( // FIX: This is the "else" for products.length > 0
+        <div className="flex flex-col items-center justify-center text-center px-4 py-12">
+  {/* Cube Icon Container */}
+  <div className="relative mb-6 transition-transform duration-500 hover:scale-110">
+    <div className="relative w-[80px] h-[84px] md:w-[140px] md:h-[147px]">
+      <Image
+        src="/Images/cube.png"
+        alt="Cube Icon"
+        fill
+        className="object-contain"
+        priority
+      />
+    </div>
+  </div>
 
+  <p className="text-center text-[42px] text-black leading-1">Product coming Soon</p>
+
+  {/* Text Content */}
+  <h2 className="text-[#1A1A1A] font-sora font-extrabold text-[18px] md:text-[28px]  leading-tight mb-4">
+    Everything you need <br className="hidden md:block" /> to know about our tea
+  </h2>
+  
+  <Link href={`/`}>
+   <button className="text-white bg-[#77923B] p-2 md:py-3 md:px-7 font-sora text-[14px] md:text-[18px] leading-relaxed">
+    Notify me When Available </button>
+  </Link>
+ 
+</div>
       )}
     </div>
   );
