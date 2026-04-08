@@ -45,7 +45,7 @@ function TeaCard({ product }: { product: any }) {
               strokeWidth={0}
             />
             <span className="font-sora text-[16px] lg:text-[18px] text-gray-700">
-              5.0
+              {product.averageRating.toFixed(1)}
             </span>
           </div>
         </div>

@@ -44,8 +44,8 @@ export default function Page({ params }: PageProps) {
       
       <Description product={product} />
       
-      <HowToBrew />
-      <ReviewsSection />
+      <HowToBrew product={product} />
+      <ReviewsSection productId={product.id} />
       <RelatedProducts />
     </div>
   );
