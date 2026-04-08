@@ -319,7 +319,7 @@ export default function ProductPage() {
                   </h3>
                   <div className="flex items-center gap-1">
                     <Star className="w-3.5 h-3.5 fill-[#F2C94C] text-[#F2C94C]" />
-                    <span className="font-sora font-medium text-[12px] md:text-[14px]">{product.averageRating.toFixed(1)}</span>
+                    <span className="font-sora font-medium text-[12px] md:text-[14px]">{product.averageRating?.toFixed(1)}</span>
                   </div>
                 </div>
                 <p className="font-sora font-bold text-[18px] md:text-[24px] text-[#77923B] px-1">

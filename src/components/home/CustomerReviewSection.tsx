@@ -121,7 +121,7 @@ export default function CustomerReviewsSection({
               <span className="font-sora font-bold text-gray-900
                                text-[3rem] sm:text-[3.5rem] lg:text-[4rem]
                                leading-none">
-                {content.overallRating.toFixed(1)}
+                {content.overallRating?.toFixed(1)}
               </span>
               <span className="font-sora font-semibold text-gray-400
                                text-[16px] sm:text-[16px] lg:text-[18px]">

@@ -32,7 +32,7 @@ function RelatedTeaCard({ product }: { product: any }) {
           <div className="flex items-center gap-1 shrink-0">
             <Star className="w-5 h-5 fill-[#F5C519] text-[#F5C519]" strokeWidth={0} />
             <span className="font-sora text-[14px] md:text-[16px] text-gray-700">
-              {product.averageRating.toFixed(1)}
+              {product.averageRating?.toFixed(1)}
             </span>
           </div>
         </div>

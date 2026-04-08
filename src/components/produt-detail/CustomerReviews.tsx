@@ -35,7 +35,7 @@ export default function ReviewsSection({ productId }: ReviewsSectionProps) {
     });
 
     return {
-      averageRating: totalCount > 0 ? (totalScore / totalCount).toFixed(1) : "0.0",
+      averageRating: totalCount > 0 ? (totalScore / totalCount)?.toFixed(1) : "0.0",
       totalReviews: totalCount,
     };
   }, [distribution]);
