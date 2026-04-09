@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const TopDescription = () => {
   return (
@@ -8,37 +8,29 @@ const TopDescription = () => {
         <h1 className="font-bold lg:text-[100px] text-[38px] text-[#9BA87D] leading-0">
           About Aroma Tea
         </h1>
-        <h1 className="font-bold lg:text-[100px] text-[38px] scale-y-[-1] bg-gradient-to-t from-[#9BA87D]/20 to-transparent 
-                       bg-clip-text text-transparent select-none -mt-1 lg:-mt-1 opacity-50">
+        <h1
+          className="font-bold lg:text-[100px] text-[38px] scale-y-[-1] bg-gradient-to-t from-[#9BA87D]/20 to-transparent 
+                       bg-clip-text text-transparent select-none -mt-1 lg:-mt-1 opacity-50"
+        >
           About Aroma Tea
         </h1>
       </div>
 
       {/* 2. Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-        
         {/* Mobile Title: Only visible on small screens to appear above images */}
         <h2 className="lg:hidden text-3xl font-bold text-black text-center mb-4">
-          Crafted In Himalayans
+          Himalayan Origin & Our Craft
         </h2>
 
         {/* Right Side (Images): Becomes top on mobile via order-1 */}
-        <div className="order-1 lg:order-2 flex items-center justify-center lg:justify-end gap-[20px]">
+        <div className="order-1 lg:order-2 flex items-center justify-center lg:justify-end gap-[10px]">
           {/* Garden Image: 305x339 */}
-          <div className="w-[45%] lg:w-[305px] lg:h-[339px] -translate-y-6">
-            <img 
-              src="/Images/tea-garden.png" 
-              alt="Tea Garden" 
-              className="rounded-[16px] shadow-md w-full h-full object-cover"
-            />
-          </div>
-          
-          {/* Mountain Image: 350x389 */}
-          <div className="w-[50%] lg:w-[350px] lg:h-[389px] translate-y-6">
-            <img 
-              src="/Images/tea-mountain.png" 
-              alt="Himalayan Mountain" 
-              className="rounded-[16px] shadow-lg w-full h-full object-cover "
+          <div className=" -translate-y-6">
+            <img
+              src="/Images/tea-garden.jpeg"
+              alt="Tea Garden"
+              className="rounded-[16px] shadow-md w-full h-full object-fill"
             />
           </div>
         </div>
@@ -47,24 +39,43 @@ const TopDescription = () => {
         <div className="order-2 lg:order-1 text-center lg:text-left max-w-[536px] mx-auto lg:mx-0">
           {/* Desktop Title: Only visible on lg screens */}
           <h2 className="hidden lg:block text-[40px] font-bold text-black mb-8 leading-tight">
-            Crafted In Himalayans
+            Himalayan Origin & Our Craft
           </h2>
-          
-          <div className="space-y-6 text-gray-700 leading-relaxed text-sm lg:text-base">
+
+          <div className="space-y-6 text-gray-700 leading-relaxed text-sm lg:text-base text-justify">
             <p>
-              Aroma Speciality Tea Industry (ASTI) was founded in 2012 in Suryodaya, 
-              Fikkal, Ilam - a region known for its misty hills, fertile soil, and ideal 
-              altitude for orthodox tea. Here, tea is not rushed. It is grown, 
-              harvested, and crafted with patience.
+              Nestled in the Himalayan landscape, Nepal has over 16,000 hectares
+              dedicated to tea cultivation across its mist-covered hills. Six
+              प्रमुख regions—Ilam, Panchthar, Dhankuta, Terhathum,
+              Sindhulpalchok, and Kaski—are renowned for producing premium
+              orthodox teas. Around 15% of the country’s total tea production
+              consists of orthodox varieties, known for their refined aroma,
+              complexity, and artisanal craftsmanship, alongside smaller
+              quantities of green, white, and oolong teas.
             </p>
+
             <p>
-              At Aroma Tea, we focus on purity, origin, and consistency. Our teas are 
-              organic, pesticide-free, and carefully produced using traditional 
-              methods that respect both the leaf and the land it comes from.
+              Established in 2012 A.D., Aroma Speciality Tea Industry (ASTI) was
+              founded with the vision of crafting high-quality organic teas that
+              capture the essence of the Himalayas. Located in Suryodaya,
+              Fikkal, at elevations ranging from 3,000 to 6,000 feet, the
+              company operates in one of Nepal’s most distinguished tea-growing
+              regions. The unique altitude and climate contribute to the
+              distinctive flavor, aroma, and character that define its teas.
+            </p>
+
+            <p>
+              With a strong commitment to hand-plucked leaves and sustainable
+              practices, ASTI works closely with local smallholder farmers,
+              preserving tradition while supporting rural communities. The
+              facility has an annual production capacity of approximately 50,000
+              to 70,000 tons, specializing in a diverse range of orthodox teas,
+              including black, green, oolong, and white varieties—each carefully
+              crafted to deliver an authentic and refined Himalayan tea
+              experience.
             </p>
           </div>
         </div>
-
       </div>
     </section>
   );
