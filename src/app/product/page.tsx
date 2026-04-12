@@ -301,7 +301,7 @@ export default function ProductPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-4 md:gap-y-8 w-full mb-12 lg:mb-16">
             {products.map((product: any) => (
               <Link 
-                href={`/product/${product.slug}`} 
+                href={`/product/view/?slug=${product.slug}`} 
                 key={product.id} 
                 className="flex flex-col mx-auto group cursor-pointer w-full"
               >

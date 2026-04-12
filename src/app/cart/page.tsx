@@ -60,12 +60,12 @@ const CartPage: React.FC = () => {
         // ... (Empty cart UI remains identical)
         <div className="flex flex-col items-center justify-center text-center">
           <div className="relative w-[169px] h-[193px] md:w-[230px] md:h-[263px] mb-8">
-            <Image
+            <img
               src="/Images/CartIcon.png"
               alt="Empty Cart"
-              fill
+              
               className="object-contain"
-              priority
+              
             />
           </div>
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
