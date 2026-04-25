@@ -15,6 +15,7 @@ import { Loader2 } from "lucide-react";
  * This component fetches data client-side based on a query parameter.
  * This allows for a static export without needing generateStaticParams.
  */
+
 function ProductContent() {
   const searchParams = useSearchParams();
   const slug = searchParams.get("slug");
@@ -25,7 +26,9 @@ function ProductContent() {
   if (!slug) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <p className="text-gray-500 font-medium">Please select a product from our shop.</p>
+        <p className="text-gray-500 font-medium">
+          Please select a product from our shop.
+        </p>
       </div>
     );
   }
@@ -64,7 +67,7 @@ export default function ProductDetailPage() {
      * Next.js static export requires useSearchParams to be wrapped in Suspense
      * to prevent build-time de-optimization errors.
      */
-    <Suspense 
+    <Suspense
       fallback={
         <div className="flex items-center justify-center min-h-[60vh]">
           <Loader2 className="w-10 h-10 animate-spin text-[#77923B]" />

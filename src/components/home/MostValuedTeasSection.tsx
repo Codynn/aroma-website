@@ -16,13 +16,15 @@ import { useGetProducts } from "@/services/api/product.api";
 function TeaCard({ product }: { product: any }) {
   // Use the same price logic as Top-Section.tsx
   const currentPrice = product.sellingPrice;
-  
 
   // Use the same image fallback logic as Top-Section.tsx
-  const displayImage = product.imageUrl || (product.secondaryImageUrls && product.secondaryImageUrls[0]) || "/placeholder.png";
+  const displayImage =
+    product.imageUrl ||
+    (product.secondaryImageUrls && product.secondaryImageUrls[0]) ||
+    "/placeholder.png";
 
   return (
-    <Link href={`/product/${product.id}`} className="group block">
+    <Link href={`/product/details/${product.id}`} className="group block">
       {/* Image Container */}
       <div className="relative w-full aspect-square bg-gray-50 rounded-xl overflow-hidden">
         <HandledImage
@@ -55,7 +57,6 @@ function TeaCard({ product }: { product: any }) {
           <p className="font-sora font-bold text-[#77923B] text-[16px] lg:text-[18px]">
             Rs.{currentPrice}
           </p>
-          
         </div>
       </div>
     </Link>
@@ -77,9 +78,15 @@ export default function MostValuedTeas() {
   }
 
   return (
-    <section aria-labelledby="most-valued-heading" className="w-full bg-white mt-4 py-10 sm:py-14 lg:py-16">
+    <section
+      aria-labelledby="most-valued-heading"
+      className="w-full bg-white mt-4 py-10 sm:py-14 lg:py-16"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 id="most-valued-heading" className="font-sora font-bold text-[#77923B] text-center text-[1.6rem] sm:text-[2rem] lg:text-[2.5rem] leading-tight mb-8 sm:mb-10 lg:mb-12">
+        <h2
+          id="most-valued-heading"
+          className="font-sora font-bold text-[#77923B] text-center text-[1.6rem] sm:text-[2rem] lg:text-[2.5rem] leading-tight mb-8 sm:mb-10 lg:mb-12"
+        >
           {MVT_SECTION_HEADING}
         </h2>
 
@@ -90,7 +97,10 @@ export default function MostValuedTeas() {
         </div>
 
         <div className="mt-8 sm:mt-10 flex justify-center">
-          <Button asChild className="w-full sm:w-auto rounded-full bg-[#77923B] hover:bg-[#3d6835] text-white font-sora font-medium text-[14px] sm:text-[15px] px-10 h-11 sm:h-12 transition-all duration-300">
+          <Button
+            asChild
+            className="w-full sm:w-auto rounded-full bg-[#77923B] hover:bg-[#3d6835] text-white font-sora font-medium text-[14px] sm:text-[15px] px-10 h-11 sm:h-12 transition-all duration-300"
+          >
             <Link href={MVT_VIEW_ALL_HREF}>{MVT_VIEW_ALL_LABEL}</Link>
           </Button>
         </div>

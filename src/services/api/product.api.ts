@@ -1,6 +1,6 @@
 // hooks/use-products.ts
 import { useQuery } from "@tanstack/react-query";
-import axiosInstance from "@/lib/axios"; 
+import axiosInstance from "@/lib/axios";
 import { ProductResponse } from "@/types/product/product.types";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
@@ -12,21 +12,23 @@ const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
  * - Filtering (category, price range)
  * - Sorting (sortBy, sortOrder)
  */
-export const useGetProducts = (filters: {
-  page?: number;
-  limit?: number;
-  category?: string;
-  minPrice?: number;
-  maxPrice?: number;
-  sortBy?: string; // e.g., "soldQuantity" or "updatedAt"
-  sortOrder?: string; // e.g., "desc" or "asc"
-  q?: string;
-} = {}) => {
+export const useGetProducts = (
+  filters: {
+    page?: number;
+    limit?: number;
+    category?: string;
+    minPrice?: number;
+    maxPrice?: number;
+    sortBy?: string; // e.g., "soldQuantity" or "updatedAt"
+    sortOrder?: string; // e.g., "desc" or "asc"
+    q?: string;
+  } = {},
+) => {
   // Destructure with default values for safety
   const { page = 1, limit = 100, q = "", ...rest } = filters;
 
   return useQuery<ProductResponse>({
-    // queryKey includes the filters object so React Query 
+    // queryKey includes the filters object so React Query
     // refetches automatically when any value changes
     queryKey: ["products", filters],
     queryFn: async () => {
@@ -43,7 +45,7 @@ export const useGetProducts = (filters: {
       return data;
     },
     // Keeps data fresh for 5 minutes but avoids unnecessary background refetches
-    staleTime: 5 * 60 * 1000, 
+    staleTime: 5 * 60 * 1000,
   });
 };
 

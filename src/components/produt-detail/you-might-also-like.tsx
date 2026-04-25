@@ -8,13 +8,13 @@ import { useGetProducts } from "@/services/api/product.api";
 // ── Related Tea Card ─────────────────────────────────────────────────────────
 function RelatedTeaCard({ product }: { product: any }) {
   // Image handling from MostValuedTeas reference
-  const displayImage = 
-    product.imageUrl || 
-    (product.secondaryImageUrls && product.secondaryImageUrls[0]) || 
+  const displayImage =
+    product.imageUrl ||
+    (product.secondaryImageUrls && product.secondaryImageUrls[0]) ||
     "/placeholder.png";
 
   return (
-    <Link href={`/product/${product.id}`} className="group block">
+    <Link href={`/product/details/${product.id}`} className="group block">
       <div className="relative w-full aspect-square md:w-[293px] md:h-[352px] bg-gray-50 rounded-[16px] overflow-hidden">
         <HandledImage
           src={displayImage}
@@ -30,7 +30,10 @@ function RelatedTeaCard({ product }: { product: any }) {
             {product.name}
           </p>
           <div className="flex items-center gap-1 shrink-0">
-            <Star className="w-5 h-5 fill-[#F5C519] text-[#F5C519]" strokeWidth={0} />
+            <Star
+              className="w-5 h-5 fill-[#F5C519] text-[#F5C519]"
+              strokeWidth={0}
+            />
             <span className="font-sora text-[14px] md:text-[16px] text-gray-700">
               {product.averageRating?.toFixed(1)}
             </span>

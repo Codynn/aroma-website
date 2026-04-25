@@ -16,13 +16,14 @@ const nextConfig: NextConfig = {
         pathname: "/**",
       },
       {
-        protocol: 'https',
-        hostname: 'img.youtube.com',
-        port: '',
-        pathname: '/vi/**',
+        protocol: "https",
+        hostname: "img.youtube.com",
+        port: "",
+        pathname: "/vi/**",
       },
     ],
   },
+  output: "export",
 };
 
 export default nextConfig;
