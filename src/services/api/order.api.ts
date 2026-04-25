@@ -4,7 +4,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axiosInstance from "@/lib/axios";
 import { toast } from "sonner";
 
-const SHOP_ID = "a1d59900-0805-4c26-9757-7014432ab588";
+const SHOP_ID =
+  process.env.NEXT_PUBLIC_SHOP_ID || "559f3544-10a6-467a-aa77-edee39528d6a";
 const my_Order_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 // --- Interfaces ---
@@ -21,7 +22,6 @@ export interface ReviewPayload {
   review: string;
 }
 
-
 export interface PaymentDistribution {
   paymentModeId: string;
   amount: number;
@@ -37,7 +37,6 @@ export interface OrderBody {
   productRequests: ProductRequest[];
   paymentDistributions: PaymentDistribution[];
   totalAmount: number;
- 
 }
 
 export interface OrderItem {
@@ -81,7 +80,10 @@ export const useCreateOrder = () => {
       queryClient.invalidateQueries({ queryKey: ["my-orders"] });
     },
     onError: (error: any) => {
-      console.error("Order Placement Error:", error?.response?.data || error.message);
+      console.error(
+        "Order Placement Error:",
+        error?.response?.data || error.message,
+      );
     },
   });
 };
@@ -90,22 +92,27 @@ export const useGetMyOrders = (page: number = 1, limit: number = 5) => {
   return useQuery<OrdersResponse>({
     queryKey: ["my-orders", SHOP_ID, page, limit],
     queryFn: async () => {
-      const { data } = await axiosInstance.get(`${my_Order_URL}/website/my-orders`, {
-        params: { shopId: SHOP_ID, page, limit },
-      });
+      const { data } = await axiosInstance.get(
+        `${my_Order_URL}/website/my-orders`,
+        {
+          params: { shopId: SHOP_ID, page, limit },
+        },
+      );
       return data;
     },
     staleTime: 2 * 60 * 1000,
   });
 };
 
-
 export const useCreateReview = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (payload: ReviewPayload) => {
-      const response = await axiosInstance.post(`${my_Order_URL}/shop-product-review`, payload);
+      const response = await axiosInstance.post(
+        `${my_Order_URL}/shop-product-review`,
+        payload,
+      );
       return response.data;
     },
     onSuccess: () => {
@@ -114,7 +121,8 @@ export const useCreateReview = () => {
       queryClient.invalidateQueries({ queryKey: ["my-orders"] });
     },
     onError: (error: any) => {
-      const message = error.response?.data?.message || "Failed to submit review";
+      const message =
+        error.response?.data?.message || "Failed to submit review";
       toast.error(message);
     },
   });
